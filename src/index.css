@@ -1,0 +1,188 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Veredito — Official Brand Palette */
+    --font-display: 'Instrument Serif', Georgia, serif;
+    --font-ui: 'Inter', system-ui, sans-serif;
+
+    /* Official colors — HSL conversions */
+    /* Deep Navy #1D334B → hsl(212, 43%, 20%) */
+    /* Muted Bronze #7A5432 → hsl(28, 41%, 34%) */
+    /* Off-White #F7F3EC → hsl(38, 42%, 95%) */
+    /* Ivory #FFFDF9 → hsl(40, 100%, 99%) */
+    /* Charcoal #121B26 → hsl(212, 38%, 11%) */
+    /* Soft Mist #DDD5C7 → hsl(34, 24%, 82%) */
+
+    /* Surface tones — Ivory/Off-White base */
+    --background: 40 100% 99%;
+    --foreground: 212 38% 11%;
+
+    --card: 38 42% 95%;
+    --card-foreground: 212 38% 11%;
+
+    --popover: 40 100% 99%;
+    --popover-foreground: 212 38% 11%;
+
+    /* Deep Navy — institutional authority */
+    --primary: 212 43% 20%;
+    --primary-foreground: 38 42% 95%;
+
+    /* Soft surfaces */
+    --secondary: 38 42% 95%;
+    --secondary-foreground: 212 38% 11%;
+
+    --muted: 34 24% 82%;
+    --muted-foreground: 212 20% 40%;
+
+    --accent: 34 24% 82%;
+    --accent-foreground: 212 38% 11%;
+
+    /* Muted Bronze — editorial accent */
+    --bronze: 28 41% 34%;
+    --bronze-foreground: 38 42% 95%;
+
+    /* Alerts */
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Soft Mist borders */
+    --border: 34 24% 82%;
+    --input: 34 24% 82%;
+    --ring: 212 43% 20%;
+
+    --radius: 0.375rem;
+
+    /* Status colors */
+    --status-draft: 212 20% 50%;
+    --status-review: 35 90% 50%;
+    --status-approved: 160 60% 40%;
+    --status-scheduled: 212 55% 50%;
+    --status-published: 160 70% 35%;
+    --status-archived: 212 10% 65%;
+
+    /* Sidebar — Deep Navy tones */
+    --sidebar-background: 212 43% 20%;
+    --sidebar-foreground: 38 42% 95%;
+    --sidebar-primary: 28 41% 34%;
+    --sidebar-primary-foreground: 38 42% 95%;
+    --sidebar-accent: 212 40% 25%;
+    --sidebar-accent-foreground: 38 42% 95%;
+    --sidebar-border: 212 35% 28%;
+    --sidebar-ring: 28 41% 34%;
+    --sidebar-muted: 212 25% 35%;
+
+    /* Elevation */
+    --shadow-sm: 0 1px 2px 0 rgba(29, 51, 75, 0.04);
+    --shadow-md: 0 0 0 1px rgba(29, 51, 75, 0.04), 0 2px 4px rgba(29, 51, 75, 0.06);
+    --shadow-lg: 0 0 0 1px rgba(29, 51, 75, 0.04), 0 2px 4px rgba(29, 51, 75, 0.06), 0 12px 24px rgba(29, 51, 75, 0.06);
+  }
+
+  .dark {
+    --background: 212 38% 11%;
+    --foreground: 38 42% 95%;
+    --card: 212 43% 15%;
+    --card-foreground: 38 42% 95%;
+    --popover: 212 43% 15%;
+    --popover-foreground: 38 42% 95%;
+    --primary: 38 42% 95%;
+    --primary-foreground: 212 43% 20%;
+    --secondary: 212 40% 18%;
+    --secondary-foreground: 38 42% 95%;
+    --muted: 212 30% 22%;
+    --muted-foreground: 34 24% 65%;
+    --accent: 212 30% 22%;
+    --accent-foreground: 38 42% 95%;
+    --bronze: 28 41% 45%;
+    --bronze-foreground: 38 42% 95%;
+    --destructive: 0 62% 45%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 212 30% 22%;
+    --input: 212 30% 22%;
+    --ring: 38 42% 95%;
+    --sidebar-background: 212 38% 8%;
+    --sidebar-foreground: 34 24% 70%;
+    --sidebar-primary: 28 41% 45%;
+    --sidebar-primary-foreground: 38 42% 95%;
+    --sidebar-accent: 212 35% 15%;
+    --sidebar-accent-foreground: 38 42% 95%;
+    --sidebar-border: 212 30% 18%;
+    --sidebar-ring: 28 41% 45%;
+    --sidebar-muted: 212 20% 40%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-ui);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .font-ui {
+    font-family: var(--font-ui);
+  }
+
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .shadow-editorial-sm {
+    box-shadow: var(--shadow-sm);
+  }
+
+  .shadow-editorial {
+    box-shadow: var(--shadow-md);
+  }
+
+  .shadow-editorial-lg {
+    box-shadow: var(--shadow-lg);
+  }
+
+  .status-dot {
+    @apply inline-block h-1.5 w-1.5 rounded-full;
+  }
+
+  .status-draft {
+    background-color: hsl(var(--status-draft));
+  }
+
+  .status-review {
+    background-color: hsl(var(--status-review));
+  }
+
+  .status-approved {
+    background-color: hsl(var(--status-approved));
+  }
+
+  .status-scheduled {
+    background-color: hsl(var(--status-scheduled));
+  }
+
+  .status-published {
+    background-color: hsl(var(--status-published));
+  }
+
+  .status-archived {
+    background-color: hsl(var(--status-archived));
+  }
+}
