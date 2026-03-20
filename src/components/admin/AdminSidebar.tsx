@@ -49,9 +49,9 @@ export function AdminSidebar({ collapsed, onToggle }: AdminSidebarProps) {
       )}
     >
       {/* Brand */}
-      <div className="flex h-14 items-center gap-3 border-b border-sidebar-border px-4">
+      <div className="flex h-20 items-center gap-3 border-b border-sidebar-border px-4">
         {!collapsed ? (
-          <img src={logoPrincipal} alt="Veredito" className="h-12 w-auto brightness-0 invert opacity-90" />
+          <img src={logoPrincipal} alt="Veredito" className="h-16 w-auto brightness-0 invert opacity-90" />
         ) : (
           <span className="font-display text-xl font-normal text-sidebar-foreground mx-auto opacity-80">V</span>
         )}

@@ -30,7 +30,7 @@ export default function LoginPage() {
         <div className="absolute inset-0 bg-primary/30" />
 
         <div className="relative z-10">
-          <img src={logoPrincipal} alt="Veredito" className="h-24 w-auto brightness-0 invert opacity-90" />
+          <img src={logoPrincipal} alt="Veredito" className="h-20 w-auto brightness-0 invert opacity-90" />
         </div>
 
         <div className="relative z-10">
@@ -54,7 +54,7 @@ export default function LoginPage() {
         <div className="w-full max-w-sm">
           {/* Mobile brand */}
           <div className="mb-10 lg:hidden flex flex-col items-center">
-            <img src={logoPrincipal} alt="Veredito" className="h-20 w-auto mb-2" />
+            <img src={logoPrincipal} alt="Veredito" className="h-16 w-auto mb-2" />
           </div>
 
           <div className="mb-8">
