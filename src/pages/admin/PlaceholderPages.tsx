@@ -913,12 +913,16 @@ export function NewsletterPage() {
 
   return (
     <div className="space-y-5">
-      <PageHeader title="Newsletter" subtitle="Gerencie leads, envios e métricas">
+      <PageHeader title="Newsletter" subtitle="Operação local de envios e métricas, sem integração real nesta fase">
         <div className="flex items-center gap-2">
           <SecondaryBtn onClick={() => toast.success("Exportação iniciada — arquivo será enviado por e-mail.")} icon={Download}>Exportar leads</SecondaryBtn>
           <PrimaryBtn onClick={openCreate} icon={Send}>Novo envio</PrimaryBtn>
         </div>
       </PageHeader>
+
+      <div className="rounded-lg border border-bronze/20 bg-bronze/5 px-4 py-3 text-[12px] text-muted-foreground">
+        Este módulo permanece mockado para suporte estrutural do admin. Não há envio real, sincronização externa ou automação de campanha nesta fase.
+      </div>
 
       {/* Stats */}
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
@@ -1049,9 +1053,13 @@ export function UsuariosPage() {
 
   return (
     <div className="space-y-5">
-      <PageHeader title="Usuários" subtitle="Gerencie usuários do painel e permissões">
+      <PageHeader title="Usuários" subtitle="Estrutura local de usuários do painel, sem autenticação ou permissões reais">
         <PrimaryBtn onClick={openCreate} icon={Plus}>Convidar usuário</PrimaryBtn>
       </PageHeader>
+
+      <div className="rounded-lg border border-bronze/20 bg-bronze/5 px-4 py-3 text-[12px] text-muted-foreground">
+        A camada de usuários existe apenas como estrutura visual e operacional local. Regras reais de acesso continuam fora do escopo desta fase.
+      </div>
 
       <div className="rounded-lg bg-card shadow-editorial overflow-hidden">
         <table className="w-full">
@@ -1239,7 +1247,11 @@ export function ConfiguracoesPage() {
 
   return (
     <div className="space-y-5">
-      <PageHeader title="Configurações" subtitle="Configurações gerais do portal, SEO e integrações" />
+      <PageHeader title="Configurações" subtitle="Configurações estruturais locais do portal, sem integrações ativas nesta fase" />
+
+      <div className="rounded-lg border border-bronze/20 bg-bronze/5 px-4 py-3 text-[12px] text-muted-foreground">
+        Esta área organiza parâmetros locais do painel e não ativa integrações, SEO técnico final ou comportamento de produção.
+      </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {configSections.map((s) => (

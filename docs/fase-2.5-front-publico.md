@@ -138,3 +138,8 @@ src/pages/public/
 - [ ] Responsivo: mobile-first
 - [ ] Dados mockados mas realistas
 - [ ] Sem dependência do admin — funciona standalone
+> Status: historico de planejamento
+> Este documento nao representa mais o status real da 2.5.
+> Fontes ativas:
+> - `C:\projetos\jornal\docs\status-implementacao-consolidado.md`
+> - `C:\projetos\jornal\docs\roadmap-fase-2-consolidado.md`

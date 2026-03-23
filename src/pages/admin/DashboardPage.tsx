@@ -1,81 +1,114 @@
-import React from "react";
+﻿import React, { useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   FileText,
   Eye,
-  Clock,
-  CheckCircle,
   Calendar,
   Send,
   ArrowRight,
   TrendingUp,
   AlertCircle,
+  LayoutGrid,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  canConteudoAppearInHomeHighlights,
+  contentStatusLabels,
+  getContentTypeLabel,
+  useEditorialStore,
+} from "./editorial-store";
 
-const statusCards = [
-  { label: "Rascunhos", value: 12, icon: FileText, dotClass: "status-draft" },
-  { label: "Em revisão", value: 5, icon: Eye, dotClass: "status-review" },
-  { label: "Agendados", value: 3, icon: Calendar, dotClass: "status-scheduled" },
-  { label: "Publicados hoje", value: 8, icon: Send, dotClass: "status-published" },
-];
-
-const recentActivity = [
-  {
-    title: "STF suspende efeitos de lei estadual sobre ICMS",
-    type: "Decisão",
-    author: "Ana Beatriz",
-    time: "há 12 min",
-    status: "review" as const,
-  },
-  {
-    title: "Nova regulamentação do mercado imobiliário entra em vigor",
-    type: "Notícia",
-    author: "Carlos Mendes",
-    time: "há 45 min",
-    status: "draft" as const,
-  },
-  {
-    title: "Análise: impacto da reforma tributária nos escritórios",
-    type: "Artigo",
-    author: "Dra. Fernanda Lima",
-    time: "há 1h",
-    status: "approved" as const,
-  },
-  {
-    title: "Opinião: o futuro do direito sucessório digital",
-    type: "Opinião",
-    author: "Prof. Ricardo Alves",
-    time: "há 2h",
-    status: "published" as const,
-  },
-  {
-    title: "TST define nova súmula sobre trabalho remoto",
-    type: "Decisão",
-    author: "Mariana Costa",
-    time: "há 3h",
-    status: "scheduled" as const,
-  },
-];
-
-const statusLabels: Record<string, string> = {
-  draft: "Rascunho",
-  review: "Revisão",
-  approved: "Aprovado",
-  scheduled: "Agendado",
-  published: "Publicado",
-};
+const statusCardConfig = [
+  { key: "draft", label: "Rascunhos", icon: FileText, dotClass: "status-draft" },
+  { key: "review", label: "Em revisão", icon: Eye, dotClass: "status-review" },
+  { key: "scheduled", label: "Agendados", icon: Calendar, dotClass: "status-scheduled" },
+  { key: "published", label: "Publicados", icon: Send, dotClass: "status-published" },
+] as const;
 
 const quickActions = [
-  { label: "Nova notícia", description: "Criar notícia em rascunho" },
-  { label: "Nova decisão", description: "Registrar decisão judicial" },
-  { label: "Novo artigo", description: "Escrever artigo editorial" },
-  { label: "Nova opinião", description: "Criar coluna de opinião" },
-];
+  { label: "Nova notícia", description: "Criar notícia em rascunho", href: "/admin/conteudos/novo?tipo=noticia" },
+  { label: "Nova decisão", description: "Registrar decisão judicial", href: "/admin/conteudos/novo?tipo=decisao" },
+  { label: "Novo artigo", description: "Escrever artigo editorial", href: "/admin/conteudos/novo?tipo=artigo" },
+  { label: "Nova opinião", description: "Criar coluna de opinião", href: "/admin/conteudos/novo?tipo=opiniao" },
+] as const;
 
 export default function DashboardPage() {
+  const navigate = useNavigate();
+  const {
+    autores,
+    conteudos,
+    editorias,
+    fontes,
+    homeHighlights,
+    getAutorById,
+  } = useEditorialStore();
+
+  const statusCards = useMemo(() => {
+    return statusCardConfig.map((card) => ({
+      ...card,
+      value: conteudos.filter((item) => item.status === card.key).length,
+    }));
+  }, [conteudos]);
+
+  const recentActivity = useMemo(() => {
+    return [...conteudos]
+      .sort((a, b) => b.id - a.id)
+      .slice(0, 5)
+      .map((item) => ({
+        id: item.id,
+        title: item.title,
+        type: getContentTypeLabel(item.typeKey),
+        author: getAutorById(item.authorId)?.name || "Autor não encontrado",
+        dateLabel: item.dateLabel,
+        status: item.status,
+      }));
+  }, [conteudos, getAutorById]);
+
+  const eligibleConteudos = useMemo(() => {
+    return conteudos.filter((item) => canConteudoAppearInHomeHighlights(item, editorias, autores, fontes));
+  }, [conteudos, editorias, autores, fontes]);
+
+  const inactiveEditoriasLinked = useMemo(() => {
+    return conteudos.filter((item) => {
+      const editoria = editorias.find((entry) => entry.id === item.editoriaId);
+      return !editoria || editoria.status !== "active";
+    }).length;
+  }, [conteudos, editorias]);
+
+  const alerts = useMemo(() => {
+    const items = [] as { icon: typeof AlertCircle; tone: string; title: string; description: string }[];
+
+    const reviewCount = conteudos.filter((item) => item.status === "review").length;
+    if (reviewCount > 0) {
+      items.push({
+        icon: AlertCircle,
+        tone: "text-destructive",
+        title: `${reviewCount} conteúdo(s) aguardam revisão editorial`,
+        description: "O fluxo da 2.3 está ativo e depende de fechamento de revisão no editor principal.",
+      });
+    }
+
+    items.push({
+      icon: LayoutGrid,
+      tone: "text-bronze",
+      title: `${homeHighlights.length} destaque(s) ativos sobre ${eligibleConteudos.length} conteúdo(s) elegíveis`,
+      description: "A curadoria da home está operando sobre a mesma base canônica local do admin.",
+    });
+
+    if (inactiveEditoriasLinked > 0) {
+      items.push({
+        icon: AlertCircle,
+        tone: "text-amber-700",
+        title: `${inactiveEditoriasLinked} vínculo(s) editoriais exigem revisão`,
+        description: "Há conteúdos que perderam suporte canônico em editoria e precisam de saneamento interno.",
+      });
+    }
+
+    return items.slice(0, 3);
+  }, [conteudos, eligibleConteudos.length, homeHighlights.length, inactiveEditoriasLinked]);
+
   return (
     <div className="space-y-6">
-      {/* Status cards */}
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         {statusCards.map((card) => (
           <div
@@ -97,86 +130,80 @@ export default function DashboardPage() {
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
-        {/* Recent activity */}
         <div className="lg:col-span-2 rounded-lg bg-card shadow-editorial">
           <div className="flex items-center justify-between border-b border-border px-5 py-3.5">
             <h2 className="text-[13px] font-semibold text-foreground">Atividade recente</h2>
-            <button className="flex items-center gap-1 text-[12px] font-medium text-muted-foreground hover:text-foreground transition-colors">
+            <button
+              onClick={() => navigate("/admin/conteudos")}
+              className="flex items-center gap-1 text-[12px] font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
               Ver tudo <ArrowRight className="h-3 w-3" strokeWidth={1.5} />
             </button>
           </div>
           <div className="divide-y divide-border">
-            {recentActivity.map((item, i) => (
-              <div
-                key={i}
-                className="flex items-center gap-4 px-5 py-3 hover:bg-muted/30 transition-colors duration-150 cursor-pointer"
+            {recentActivity.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => navigate(`/admin/conteudos/${item.id}/preview`)}
+                className="flex w-full items-center gap-4 px-5 py-3 text-left transition-colors duration-150 hover:bg-muted/30"
               >
-                <div className="flex-1 min-w-0">
-                  <p className="text-[13px] font-medium text-foreground truncate">
-                    {item.title}
-                  </p>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-[13px] font-medium text-foreground">{item.title}</p>
                   <div className="mt-0.5 flex items-center gap-2 text-[11px] text-muted-foreground">
                     <span>{item.type}</span>
                     <span>·</span>
                     <span>{item.author}</span>
                     <span>·</span>
-                    <span className="tabular-nums">{item.time}</span>
+                    <span className="tabular-nums">{item.dateLabel}</span>
                   </div>
                 </div>
-                <div className="flex items-center gap-1.5 shrink-0">
+                <div className="flex shrink-0 items-center gap-1.5">
                   <span className={cn("status-dot", `status-${item.status}`)} />
                   <span className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
-                    {statusLabels[item.status]}
+                    {contentStatusLabels[item.status]}
                   </span>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         </div>
 
-        {/* Right column */}
         <div className="space-y-6">
-          {/* Quick actions */}
           <div className="rounded-lg bg-card shadow-editorial">
             <div className="border-b border-border px-5 py-3.5">
               <h2 className="text-[13px] font-semibold text-foreground">Ações rápidas</h2>
             </div>
-            <div className="p-3 space-y-1">
+            <div className="space-y-1 p-3">
               {quickActions.map((action) => (
                 <button
                   key={action.label}
-                  className="flex w-full items-center justify-between rounded-md px-3 py-2.5 text-left hover:bg-muted/50 transition-colors duration-150 group"
+                  onClick={() => navigate(action.href)}
+                  className="group flex w-full items-center justify-between rounded-md px-3 py-2.5 text-left transition-colors duration-150 hover:bg-muted/50"
                 >
                   <div>
                     <p className="text-[13px] font-medium text-foreground">{action.label}</p>
                     <p className="text-[11px] text-muted-foreground">{action.description}</p>
                   </div>
-                  <ArrowRight className="h-3.5 w-3.5 text-muted-foreground/0 group-hover:text-muted-foreground transition-all" strokeWidth={1.5} />
+                  <ArrowRight className="h-3.5 w-3.5 text-muted-foreground/0 transition-all group-hover:text-muted-foreground" strokeWidth={1.5} />
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Alerts */}
           <div className="rounded-lg bg-card shadow-editorial">
             <div className="border-b border-border px-5 py-3.5">
               <h2 className="text-[13px] font-semibold text-foreground">Alertas</h2>
             </div>
-            <div className="p-4 space-y-3">
-              <div className="flex items-start gap-3">
-                <AlertCircle className="h-4 w-4 text-destructive shrink-0 mt-0.5" strokeWidth={1.5} />
-                <div>
-                  <p className="text-[13px] font-medium text-foreground">3 conteúdos aguardam revisão jurídica</p>
-                  <p className="text-[11px] text-muted-foreground mt-0.5">Decisões pendentes há mais de 24h</p>
+            <div className="space-y-3 p-4">
+              {alerts.map((item) => (
+                <div key={item.title} className="flex items-start gap-3">
+                  <item.icon className={cn("mt-0.5 h-4 w-4 shrink-0", item.tone)} strokeWidth={1.5} />
+                  <div>
+                    <p className="text-[13px] font-medium text-foreground">{item.title}</p>
+                    <p className="mt-0.5 text-[11px] text-muted-foreground">{item.description}</p>
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <TrendingUp className="h-4 w-4 text-status-published shrink-0 mt-0.5" strokeWidth={1.5} />
-                <div>
-                  <p className="text-[13px] font-medium text-foreground">Newsletter: +47 inscritos esta semana</p>
-                  <p className="text-[11px] text-muted-foreground mt-0.5">Total: 1.284 leads ativos</p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>

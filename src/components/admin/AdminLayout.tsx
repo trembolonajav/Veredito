@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { AdminSidebar } from "./AdminSidebar";
 import { AdminTopbar } from "./AdminTopbar";
@@ -33,8 +33,8 @@ export function AdminLayout() {
       <AdminTopbar title={title} collapsed={collapsed} />
       <main
         className={cn(
-          "min-h-[calc(100vh-3.5rem)] transition-all duration-200 p-6",
-          collapsed ? "ml-16" : "ml-60"
+          "min-h-[calc(100vh-3.5rem)] p-6 transition-all duration-200",
+          collapsed ? "ml-16" : "ml-60",
         )}
       >
         <Outlet />

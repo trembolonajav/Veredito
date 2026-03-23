@@ -60,3 +60,9 @@
 
 ### Fases 2.5–2.8 — Pendentes
 Ver documentação individual de cada fase.
+> Status: desatualizado documentalmente
+> Nao usar como fonte de verdade ativa de status.
+> Fontes ativas:
+> - `C:\projetos\jornal\docs\status-implementacao-consolidado.md`
+> - `C:\projetos\jornal\docs\roadmap-fase-2-consolidado.md`
+> - `C:\projetos\jornal\docs\gaps-para-avancar.md`

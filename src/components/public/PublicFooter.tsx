@@ -1,77 +1,61 @@
-import React from "react";
+﻿import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
 import logoPrincipal from "@/assets/logo_principal.png";
+import { usePublicEditorialData } from "@/pages/public/public-content";
+import { EditorialNewsletterPanel, PublicDivider, PublicPageContainer } from "./PublicEditorial";
 
-const footerSections = [
-  {
-    title: "Editorias",
-    links: [
-      { label: "Tributário", to: "/editoria/tributario" },
-      { label: "Empresarial", to: "/editoria/empresarial" },
-      { label: "Trabalhista", to: "/editoria/trabalhista" },
-      { label: "Constitucional", to: "/editoria/constitucional" },
-    ],
-  },
-  {
-    title: "Conteúdo",
-    links: [
-      { label: "Notícias", to: "/noticias" },
-      { label: "Decisões", to: "/decisoes" },
-      { label: "Artigos", to: "/artigos" },
-      { label: "Opinião", to: "/opiniao" },
-    ],
-  },
-  {
-    title: "Institucional",
-    links: [
-      { label: "Sobre o Veredito", to: "/sobre" },
-      { label: "Contato", to: "/contato" },
-      { label: "Privacidade", to: "/privacidade" },
-      { label: "Termos de uso", to: "/termos" },
-    ],
-  },
+const primaryLinks = [
+  { label: "Noticias", to: "/noticias" },
+  { label: "Decisoes", to: "/decisoes" },
+  { label: "Artigos", to: "/artigos" },
+  { label: "Opiniao", to: "/opiniao" },
+];
+
+const institutionalLinks = [
+  { label: "Sobre o Veredito", to: "/sobre" },
+  { label: "Contato", to: "/contato" },
+  { label: "Privacidade", to: "/privacidade" },
+  { label: "Termos de uso", to: "/termos" },
 ];
 
 export function PublicFooter() {
-  return (
-    <footer className="bg-primary text-primary-foreground">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          {/* Brand */}
-          <div className="col-span-2 md:col-span-1">
-            <img src={logoPrincipal} alt="Veredito" className="h-10 w-auto brightness-0 invert opacity-80 mb-4" />
-            <p className="text-[13px] text-primary-foreground/60 leading-relaxed">
-              Jornalismo jurídico com profundidade, rigor editorial e compromisso com a informação de qualidade.
-            </p>
+  const { editorias } = usePublicEditorialData();
 
-            {/* Newsletter mini */}
-            <div className="mt-6">
-              <p className="text-[12px] font-semibold text-primary-foreground/80 mb-2 font-ui">Newsletter semanal</p>
-              <div className="flex gap-2">
-                <input
-                  type="email"
-                  placeholder="Seu e-mail"
-                  className="h-9 flex-1 rounded-md bg-primary-foreground/10 border border-primary-foreground/20 px-3 text-[13px] text-primary-foreground placeholder:text-primary-foreground/40 focus:outline-none focus:ring-1 focus:ring-primary-foreground/30"
-                />
-                <button className="h-9 rounded-md bg-bronze px-3 text-[12px] font-medium text-bronze-foreground hover:bg-bronze/90 transition-colors font-ui">
-                  Assinar
-                </button>
+  const editorialLinks = useMemo(
+    () => editorias.slice(0, 4).map((item) => ({ label: item.name, to: `/editoria/${item.slug}` })),
+    [editorias],
+  );
+
+  return (
+    <footer className="border-t border-border/80 bg-primary text-primary-foreground">
+      <PublicPageContainer className="py-14 lg:py-16">
+        <div className="grid gap-10 xl:grid-cols-[1.05fr_0.95fr]">
+          <div className="grid gap-10 lg:grid-cols-[1.2fr_repeat(3,minmax(0,1fr))]">
+            <div className="lg:pr-4">
+              <span className="mb-3 block text-[11px] font-semibold uppercase tracking-[0.24em] text-primary-foreground/45">
+                Jornal juridico
+              </span>
+              <img src={logoPrincipal} alt="Veredito" className="mb-5 h-11 w-auto brightness-0 invert opacity-85" />
+              <p className="max-w-xs text-[13px] leading-[1.85] text-primary-foreground/68">
+                Jornalismo juridico com profundidade, rigor editorial e compromisso com leitura clara para quem acompanha o direito.
+              </p>
+              <div className="mt-6 space-y-2 text-[12px] text-primary-foreground/55">
+                <p>Analise editorial objetiva</p>
+                <p>Decisoes, noticias, artigos e opiniao</p>
+                <p>Curadoria publica sobria e premium</p>
               </div>
             </div>
-          </div>
 
-          {/* Link sections */}
-          {footerSections.map((section) => (
-            <div key={section.title}>
-              <h3 className="text-[12px] font-semibold uppercase tracking-wider text-primary-foreground/50 mb-3 font-ui">
-                {section.title}
+            <div>
+              <h3 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-primary-foreground/50 font-ui">
+                Navegacao
               </h3>
-              <ul className="space-y-2">
-                {section.links.map((link) => (
+              <ul className="space-y-2.5">
+                {primaryLinks.map((link) => (
                   <li key={link.to}>
                     <Link
                       to={link.to}
-                      className="text-[13px] text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+                      className="rounded-sm text-[13px] leading-relaxed text-primary-foreground/72 transition-colors hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                     >
                       {link.label}
                     </Link>
@@ -79,26 +63,68 @@ export function PublicFooter() {
                 ))}
               </ul>
             </div>
-          ))}
+
+            <div>
+              <h3 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-primary-foreground/50 font-ui">
+                Editorias
+              </h3>
+              <ul className="space-y-2.5">
+                {editorialLinks.map((link) => (
+                  <li key={link.to}>
+                    <Link
+                      to={link.to}
+                      className="rounded-sm text-[13px] leading-relaxed text-primary-foreground/72 transition-colors hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-primary-foreground/50 font-ui">
+                Institucional
+              </h3>
+              <ul className="space-y-2.5">
+                {institutionalLinks.map((link) => (
+                  <li key={link.to}>
+                    <Link
+                      to={link.to}
+                      className="rounded-sm text-[13px] leading-relaxed text-primary-foreground/72 transition-colors hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <EditorialNewsletterPanel variant="footer" className="self-start" />
         </div>
 
-        <div className="mt-10 pt-6 border-t border-primary-foreground/10 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-[11px] text-primary-foreground/40">
-            © {new Date().getFullYear()} Veredito. Todos os direitos reservados.
+        <div className="my-8">
+          <PublicDivider className="bg-primary-foreground/12" />
+        </div>
+
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-[11px] text-primary-foreground/42">
+            Copyright {new Date().getFullYear()} Veredito. Todos os direitos reservados.
           </p>
-          <div className="flex items-center gap-4">
-            <Link to="/privacidade" className="text-[11px] text-primary-foreground/40 hover:text-primary-foreground/70 transition-colors">
+          <div className="flex flex-wrap items-center gap-4">
+            <Link to="/privacidade" className="rounded-sm text-[11px] text-primary-foreground/42 transition-colors hover:text-primary-foreground/75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
               Privacidade
             </Link>
-            <Link to="/termos" className="text-[11px] text-primary-foreground/40 hover:text-primary-foreground/70 transition-colors">
+            <Link to="/termos" className="rounded-sm text-[11px] text-primary-foreground/42 transition-colors hover:text-primary-foreground/75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
               Termos
             </Link>
-            <Link to="/login" className="text-[11px] text-primary-foreground/40 hover:text-primary-foreground/70 transition-colors">
+            <Link to="/login" className="rounded-sm text-[11px] text-primary-foreground/42 transition-colors hover:text-primary-foreground/75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
               Admin
             </Link>
           </div>
         </div>
-      </div>
+      </PublicPageContainer>
     </footer>
   );
 }

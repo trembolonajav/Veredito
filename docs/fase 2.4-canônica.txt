@@ -1,0 +1,60 @@
+﻿Fase 2.4 Canônica - Veredito
+
+Objetivo da fase
+- consolidar Editorias, Autores, Fontes e Home & Destaques como camada canônica local/mockada do núcleo editorial do admin
+- fazer Conteúdos consumir essas entidades em vez de listas rígidas relevantes
+
+Escopo implementado
+- criação de uma rota administrativa canônica da Fase 2.4 baseada em store editorial compartilhada
+- ligação do admin shell à base editorial local por meio de provider único
+- substituição das telas canônicas de Conteúdos, Editorias, Autores, Fontes e Home & Destaques para operar sobre a base compartilhada
+- adaptação do formulário de conteúdo para consumir editorias, autores e fontes reais da camada local
+- adaptação da preview para refletir editoria, autor e fonte vindos das entidades canônicas
+
+Entidades consolidadas
+- Editorias: nome, slug, descrição curta, status local/mockado, uso real em Conteúdos
+- Autores: nome, slug, cargo/função editorial, bio curta, status local/mockado, uso real em Conteúdos
+- Fontes: nome, sigla, tipo, URL mockada, confiabilidade local/mockada, status local/mockado, uso real em Notícia e Decisão
+- Home & Destaques: curadoria local baseada em conteúdos existentes, com slot editorial e ordenação local
+
+Integrações feitas com Conteúdos
+- listagem de Conteúdos passou a resolver editoria e autor a partir da store editorial
+- edição rápida de Conteúdos passou a atualizar a base canônica
+- formulário de conteúdo passou a consumir editorias reais da store editorial
+- formulário de conteúdo passou a consumir autores reais da store editorial
+- notícia e decisão passaram a consumir fontes reais da store editorial
+- exclusão de conteúdo remove vínculo da curadoria da home
+- preview passou a refletir autor, editoria e fonte vindos das entidades canônicas
+
+O que deixou de ser hardcoded
+- opções rígidas de editoria no formulário de conteúdo
+- opções rígidas de autor no formulário de conteúdo
+- opções rígidas de fonte no formulário de conteúdo
+- base isolada e não canônica de editorias/autores/fontes/home nas telas administrativas da 2.4
+- preview hardcoded de conteúdo
+
+Comportamento local/mockado
+- criação e edição de editorias atualizam imediatamente a base consumida por Conteúdos
+- criação e edição de autores atualizam imediatamente a base consumida por Conteúdos
+- criação e edição de fontes atualizam imediatamente a base consumida por notícia e decisão
+- Home & Destaques seleciona conteúdos reais existentes e mantém ordenação local/mockada
+- exclusão de editoria, autor ou fonte é bloqueada quando houver vínculo ativo com conteúdo
+- nenhuma persistência real foi adicionada
+- nenhuma integração real com backend ou front público foi adicionada
+
+Arquivos impactados
+- src/App.tsx
+- src/components/admin/AdminLayout.tsx
+- src/pages/admin/EditorialSupportPages.tsx
+- src/pages/admin/ConteudoFormPage.tsx
+- src/pages/admin/ConteudoPreviewPage.tsx
+- docs/fase 2.4-canônica.txt
+
+Validação com build
+- npm run build
+- resultado: sucesso
+
+Resultado da fase
+- Editorias, Autores, Fontes e Home & Destaques passam a operar como base editorial local canônica da Fase 2.4
+- Conteúdos deixa de depender do hardcode relevante nessas entidades
+- a base fica mais coerente para continuidade de 2.5, 2.6 e 2.7 sem abrir integração real

@@ -159,3 +159,8 @@ Todas as tabelas devem ter RLS habilitado com policies baseadas em `has_role()`.
 - [ ] Auth real funciona (login/logout)
 - [ ] RLS protege dados corretamente
 - [ ] Fluxo editorial de ponta a ponta
+> Status: historico de planejamento
+> Este documento permanece como referencia de alvo, nao como status real.
+> Fontes ativas:
+> - `C:\projetos\jornal\docs\status-implementacao-consolidado.md`
+> - `C:\projetos\jornal\docs\roadmap-fase-2-consolidado.md`

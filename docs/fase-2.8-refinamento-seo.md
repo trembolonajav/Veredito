@@ -59,3 +59,8 @@ Tornar o produto publicável com qualidade profissional.
 - [ ] SEO técnico completo
 - [ ] Produto publicável profissionalmente
 - [ ] Base sólida para crescimento
+> Status: historico de planejamento
+> Este documento permanece como referencia de alvo, nao como status real.
+> Fontes ativas:
+> - `C:\projetos\jornal\docs\status-implementacao-consolidado.md`
+> - `C:\projetos\jornal\docs\roadmap-fase-2-consolidado.md`

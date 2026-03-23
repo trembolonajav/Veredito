@@ -162,3 +162,8 @@ src/components/admin/conteudo/
 - Integração com backend real
 - Automações editoriais avançadas
 - Analytics de conteúdo
+> Status: historico de planejamento
+> Este documento nao representa mais o status real da 2.3.
+> Fontes ativas:
+> - `C:\projetos\jornal\docs\status-implementacao-consolidado.md`
+> - `C:\projetos\jornal\docs\roadmap-fase-2-consolidado.md`

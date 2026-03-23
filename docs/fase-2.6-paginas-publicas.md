@@ -84,3 +84,8 @@ Cada listagem segue o mesmo padrão:
 - [ ] Conteúdo circula bem (links cruzados)
 - [ ] Responsivo em todos os breakpoints
 - [ ] Tipografia editorial consistente
+> Status: historico de planejamento
+> Este documento nao representa mais o status real da 2.6.
+> Fontes ativas:
+> - `C:\projetos\jornal\docs\status-implementacao-consolidado.md`
+> - `C:\projetos\jornal\docs\roadmap-fase-2-consolidado.md`
