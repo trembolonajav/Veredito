@@ -1,0 +1,8 @@
+export const initialAutoresShared = [
+  { id: 1, name: "Ana Beatriz Duarte", role: "Editora Senior", email: "ana@veredito.com", bio: "Jornalista especializada em Direito Tributario com 15 anos de experiencia.", articles: 47, initials: "AB", specialty: "Direito Tributario", slug: "ana-beatriz-duarte", isColumnist: false },
+  { id: 2, name: "Carlos Mendes", role: "Reporter Juridico", email: "carlos@veredito.com", bio: "Reporter juridico com passagens por grandes veiculos.", articles: 32, initials: "CM", specialty: "Direito Empresarial", slug: "carlos-mendes", isColumnist: false },
+  { id: 3, name: "Dra. Fernanda Lima", role: "Colunista", email: "fernanda@veredito.com", bio: "Professora de Direito Constitucional e colunista do Veredito.", articles: 28, initials: "FL", specialty: "Direito Constitucional", slug: "fernanda-lima", isColumnist: true },
+  { id: 4, name: "Prof. Ricardo Alves", role: "Colaborador", email: "ricardo@veredito.com", bio: "Advogado e professor universitario.", articles: 15, initials: "RA", specialty: "Direito Sucessorio", slug: "ricardo-alves", isColumnist: true },
+  { id: 5, name: "Mariana Costa", role: "Reporter Juridico", email: "mariana@veredito.com", bio: "Cobertura do STF e tribunais superiores.", articles: 24, initials: "MC", specialty: "Direito Imobiliario", slug: "mariana-costa", isColumnist: false },
+  { id: 6, name: "Joao Pedro Silva", role: "Editor Assistente", email: "joao@veredito.com", bio: "Editor assistente com foco em compliance.", articles: 19, initials: "JP", specialty: "Direito Empresarial", slug: "joao-pedro-silva", isColumnist: false },
+];

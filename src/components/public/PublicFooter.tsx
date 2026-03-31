@@ -4,16 +4,7 @@ import logoPrincipal from "@/assets/logo_principal.png";
 
 const footerSections = [
   {
-    title: "Editorias",
-    links: [
-      { label: "Tributário", to: "/editoria/tributario" },
-      { label: "Empresarial", to: "/editoria/empresarial" },
-      { label: "Trabalhista", to: "/editoria/trabalhista" },
-      { label: "Constitucional", to: "/editoria/constitucional" },
-    ],
-  },
-  {
-    title: "Conteúdo",
+    title: "Formatos",
     links: [
       { label: "Notícias", to: "/noticias" },
       { label: "Decisões", to: "/decisoes" },
@@ -22,9 +13,19 @@ const footerSections = [
     ],
   },
   {
+    title: "Editorias",
+    links: [
+      { label: "Tributário", to: "/editoria/tributario" },
+      { label: "Empresarial", to: "/editoria/empresarial" },
+      { label: "Imobiliário", to: "/editoria/imobiliario" },
+      { label: "Sucessório", to: "/editoria/sucessorio" },
+    ],
+  },
+  {
     title: "Institucional",
     links: [
       { label: "Sobre o Veredito", to: "/sobre" },
+      { label: "Newsletter", to: "/newsletter" },
       { label: "Contato", to: "/contato" },
       { label: "Privacidade", to: "/privacidade" },
       { label: "Termos de uso", to: "/termos" },
@@ -35,43 +36,52 @@ const footerSections = [
 export function PublicFooter() {
   return (
     <footer className="bg-primary text-primary-foreground">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          {/* Brand */}
-          <div className="col-span-2 md:col-span-1">
-            <img src={logoPrincipal} alt="Veredito" className="h-10 w-auto brightness-0 invert opacity-80 mb-4" />
-            <p className="text-[13px] text-primary-foreground/60 leading-relaxed">
-              Jornalismo jurídico com profundidade, rigor editorial e compromisso com a informação de qualidade.
+      {/* ── Newsletter strip ── */}
+      <div className="border-b border-primary-foreground/10">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-10">
+          <div className="max-w-2xl mx-auto text-center">
+            <p className="section-label !text-bronze-foreground mb-3">Curadoria semanal</p>
+            <h3 className="font-display text-2xl lg:text-3xl text-primary-foreground mb-2">
+              Newsletter Veredito
+            </h3>
+            <p className="text-[13px] text-primary-foreground/50 mb-6 max-w-md mx-auto font-ui">
+              As decisões mais relevantes da semana, análises exclusivas e o que você precisa saber sobre o cenário jurídico brasileiro.
             </p>
-
-            {/* Newsletter mini */}
-            <div className="mt-6">
-              <p className="text-[12px] font-semibold text-primary-foreground/80 mb-2 font-ui">Newsletter semanal</p>
-              <div className="flex gap-2">
-                <input
-                  type="email"
-                  placeholder="Seu e-mail"
-                  className="h-9 flex-1 rounded-md bg-primary-foreground/10 border border-primary-foreground/20 px-3 text-[13px] text-primary-foreground placeholder:text-primary-foreground/40 focus:outline-none focus:ring-1 focus:ring-primary-foreground/30"
-                />
-                <button className="h-9 rounded-md bg-bronze px-3 text-[12px] font-medium text-bronze-foreground hover:bg-bronze/90 transition-colors font-ui">
-                  Assinar
-                </button>
-              </div>
+            <div className="flex gap-2 max-w-sm mx-auto">
+              <input
+                type="email"
+                placeholder="Seu e-mail"
+                className="h-10 flex-1 bg-transparent border border-primary-foreground/15 px-3 text-[13px] text-primary-foreground placeholder:text-primary-foreground/30 focus:outline-none focus:border-bronze/50 transition-colors font-ui"
+              />
+              <button className="h-10 bg-bronze px-5 text-[11px] font-bold text-bronze-foreground hover:bg-bronze/90 transition-colors font-ui uppercase tracking-[0.1em]">
+                Assinar
+              </button>
             </div>
           </div>
+        </div>
+      </div>
 
-          {/* Link sections */}
+      {/* ── Main footer ── */}
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-10">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
+          <div className="col-span-2">
+            <img src={logoPrincipal} alt="Veredito" className="h-8 w-auto brightness-0 invert opacity-60 mb-4" />
+            <p className="text-[12px] text-primary-foreground/35 leading-relaxed max-w-xs font-ui">
+              Jornalismo jurídico com profundidade, rigor editorial e compromisso com a informação de qualidade.
+            </p>
+          </div>
+
           {footerSections.map((section) => (
             <div key={section.title}>
-              <h3 className="text-[12px] font-semibold uppercase tracking-wider text-primary-foreground/50 mb-3 font-ui">
+              <h4 className="text-[10px] font-bold uppercase tracking-[0.15em] text-primary-foreground/30 mb-4 font-ui">
                 {section.title}
-              </h3>
+              </h4>
               <ul className="space-y-2">
                 {section.links.map((link) => (
                   <li key={link.to}>
                     <Link
                       to={link.to}
-                      className="text-[13px] text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+                      className="text-[12px] text-primary-foreground/45 hover:text-primary-foreground transition-colors font-ui"
                     >
                       {link.label}
                     </Link>
@@ -81,21 +91,18 @@ export function PublicFooter() {
             </div>
           ))}
         </div>
+      </div>
 
-        <div className="mt-10 pt-6 border-t border-primary-foreground/10 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-[11px] text-primary-foreground/40">
+      {/* ── Bottom bar ── */}
+      <div className="border-t border-primary-foreground/8">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+          <p className="text-[10px] text-primary-foreground/25 font-ui">
             © {new Date().getFullYear()} Veredito. Todos os direitos reservados.
           </p>
           <div className="flex items-center gap-4">
-            <Link to="/privacidade" className="text-[11px] text-primary-foreground/40 hover:text-primary-foreground/70 transition-colors">
-              Privacidade
-            </Link>
-            <Link to="/termos" className="text-[11px] text-primary-foreground/40 hover:text-primary-foreground/70 transition-colors">
-              Termos
-            </Link>
-            <Link to="/login" className="text-[11px] text-primary-foreground/40 hover:text-primary-foreground/70 transition-colors">
-              Admin
-            </Link>
+            <Link to="/privacidade" className="text-[10px] text-primary-foreground/25 hover:text-primary-foreground/50 transition-colors font-ui">Privacidade</Link>
+            <Link to="/termos" className="text-[10px] text-primary-foreground/25 hover:text-primary-foreground/50 transition-colors font-ui">Termos</Link>
+            <Link to="/login" className="text-[10px] text-primary-foreground/25 hover:text-primary-foreground/50 transition-colors font-ui">Admin</Link>
           </div>
         </div>
       </div>

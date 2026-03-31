@@ -5,7 +5,8 @@ import {
   Plus, Search, Filter, MoreHorizontal, Eye, Edit, Trash2, Calendar, Clock,
   Send, Download, Globe, Shield, Palette, Database, Bell, X, Check,
   BookOpen, Scale, Building2, Briefcase, GraduationCap, ChevronUp, ChevronDown,
-  Save, ArrowLeft,
+  Save, ArrowLeft, Home, Zap, ImageOff, AlertTriangle, ExternalLink,
+  Star, Hash, Activity, Lock, Unlock,
 } from "lucide-react";
 
 /* ═══════════════════════════════════════════════
@@ -13,12 +14,12 @@ import {
    ═══════════════════════════════════════════════ */
 
 export const initialAutoresShared = [
-  { id: 1, name: "Ana Beatriz Duarte", role: "Editora Sênior", email: "ana@veredito.com", bio: "", articles: 47, initials: "AB" },
-  { id: 2, name: "Carlos Mendes", role: "Repórter Jurídico", email: "carlos@veredito.com", bio: "", articles: 32, initials: "CM" },
-  { id: 3, name: "Dra. Fernanda Lima", role: "Colunista", email: "fernanda@veredito.com", bio: "", articles: 28, initials: "FL" },
-  { id: 4, name: "Prof. Ricardo Alves", role: "Colaborador", email: "ricardo@veredito.com", bio: "", articles: 15, initials: "RA" },
-  { id: 5, name: "Mariana Costa", role: "Repórter Jurídico", email: "mariana@veredito.com", bio: "", articles: 24, initials: "MC" },
-  { id: 6, name: "João Pedro Silva", role: "Editor Assistente", email: "joao@veredito.com", bio: "", articles: 19, initials: "JP" },
+  { id: 1, name: "Ana Beatriz Duarte", role: "Editora Sênior", email: "ana@veredito.com", bio: "Jornalista especializada em Direito Tributário com 15 anos de experiência.", articles: 47, initials: "AB", specialty: "Direito Tributário", slug: "ana-beatriz-duarte", isColumnist: false },
+  { id: 2, name: "Carlos Mendes", role: "Repórter Jurídico", email: "carlos@veredito.com", bio: "Repórter jurídico com passagens por grandes veículos.", articles: 32, initials: "CM", specialty: "Direito Empresarial", slug: "carlos-mendes", isColumnist: false },
+  { id: 3, name: "Dra. Fernanda Lima", role: "Colunista", email: "fernanda@veredito.com", bio: "Professora de Direito Constitucional e colunista do Veredito.", articles: 28, initials: "FL", specialty: "Direito Constitucional", slug: "fernanda-lima", isColumnist: true },
+  { id: 4, name: "Prof. Ricardo Alves", role: "Colaborador", email: "ricardo@veredito.com", bio: "Advogado e professor universitário.", articles: 15, initials: "RA", specialty: "Direito Sucessório", slug: "ricardo-alves", isColumnist: true },
+  { id: 5, name: "Mariana Costa", role: "Repórter Jurídico", email: "mariana@veredito.com", bio: "Cobertura do STF e tribunais superiores.", articles: 24, initials: "MC", specialty: "Direito Imobiliário", slug: "mariana-costa", isColumnist: false },
+  { id: 6, name: "João Pedro Silva", role: "Editor Assistente", email: "joao@veredito.com", bio: "Editor assistente com foco em compliance.", articles: 19, initials: "JP", specialty: "Direito Empresarial", slug: "joao-pedro-silva", isColumnist: false },
 ];
 import { cn } from "@/lib/utils";
 import {
@@ -160,28 +161,23 @@ function uid() { return nextId++; }
    ═══════════════════════════════════════════════ */
 
 type Conteudo = {
-  id: number;
-  title: string;
-  type: string;
-  editoria: string;
-  author: string;
-  status: string;
-  date: string;
-  views: number;
-  body: string;
+  id: number; title: string; type: string; editoria: string; author: string;
+  status: string; date: string; views: number; body: string;
+  hasImage: boolean; hasSeo: boolean; isUrgent: boolean; isHome: boolean;
 };
 
 const initialConteudos: Conteudo[] = [
-  { id: 1, title: "STF suspende efeitos de lei estadual sobre ICMS", type: "Decisão", editoria: "Tributário", author: "Ana Beatriz", status: "review", date: "20 mar 2026", views: 342, body: "" },
-  { id: 2, title: "Nova regulamentação do mercado imobiliário", type: "Notícia", editoria: "Imobiliário", author: "Carlos Mendes", status: "draft", date: "20 mar 2026", views: 0, body: "" },
-  { id: 3, title: "Impacto da reforma tributária nos escritórios", type: "Artigo", editoria: "Tributário", author: "Dra. Fernanda Lima", status: "published", date: "19 mar 2026", views: 1284, body: "" },
-  { id: 4, title: "O futuro do direito sucessório digital", type: "Opinião", editoria: "Sucessório", author: "Prof. Ricardo Alves", status: "published", date: "19 mar 2026", views: 876, body: "" },
-  { id: 5, title: "TST define nova súmula sobre trabalho remoto", type: "Decisão", editoria: "Trabalhista", author: "Mariana Costa", status: "scheduled", date: "21 mar 2026", views: 0, body: "" },
-  { id: 6, title: "Análise: compliance nas startups brasileiras", type: "Artigo", editoria: "Empresarial", author: "João Pedro Silva", status: "approved", date: "20 mar 2026", views: 0, body: "" },
-  { id: 7, title: "Novo marco legal das garantias entra em vigor", type: "Notícia", editoria: "Empresarial", author: "Ana Beatriz", status: "published", date: "18 mar 2026", views: 2105, body: "" },
+  { id: 1, title: "STF suspende efeitos de lei estadual sobre ICMS", type: "Decisão", editoria: "Tributário", author: "Ana Beatriz Duarte", status: "review", date: "20 mar 2026", views: 342, body: "", hasImage: true, hasSeo: true, isUrgent: true, isHome: true },
+  { id: 2, title: "Nova regulamentação do mercado imobiliário", type: "Notícia", editoria: "Imobiliário", author: "Carlos Mendes", status: "draft", date: "20 mar 2026", views: 0, body: "", hasImage: false, hasSeo: false, isUrgent: false, isHome: false },
+  { id: 3, title: "Impacto da reforma tributária nos escritórios", type: "Artigo", editoria: "Tributário", author: "Dra. Fernanda Lima", status: "published", date: "19 mar 2026", views: 1284, body: "", hasImage: true, hasSeo: true, isUrgent: false, isHome: true },
+  { id: 4, title: "O futuro do direito sucessório digital", type: "Opinião", editoria: "Sucessório", author: "Prof. Ricardo Alves", status: "published", date: "19 mar 2026", views: 876, body: "", hasImage: true, hasSeo: false, isUrgent: false, isHome: false },
+  { id: 5, title: "TST define nova súmula sobre trabalho remoto", type: "Decisão", editoria: "Trabalhista", author: "Mariana Costa", status: "scheduled", date: "21 mar 2026", views: 0, body: "", hasImage: true, hasSeo: true, isUrgent: false, isHome: false },
+  { id: 6, title: "Análise: compliance nas startups brasileiras", type: "Artigo", editoria: "Empresarial", author: "João Pedro Silva", status: "approved", date: "20 mar 2026", views: 0, body: "", hasImage: false, hasSeo: true, isUrgent: false, isHome: false },
+  { id: 7, title: "Novo marco legal das garantias entra em vigor", type: "Notícia", editoria: "Empresarial", author: "Ana Beatriz Duarte", status: "published", date: "18 mar 2026", views: 2105, body: "", hasImage: true, hasSeo: true, isUrgent: false, isHome: true },
 ];
 
 const conteudoTypes = [
+  { value: "", label: "Todos os tipos" },
   { value: "Notícia", label: "Notícia" },
   { value: "Decisão", label: "Decisão" },
   { value: "Artigo", label: "Artigo" },
@@ -189,6 +185,7 @@ const conteudoTypes = [
 ];
 
 const editoriaOptions = [
+  { value: "", label: "Todas as editorias" },
   { value: "Tributário", label: "Tributário" },
   { value: "Empresarial", label: "Empresarial" },
   { value: "Imobiliário", label: "Imobiliário" },
@@ -197,7 +194,10 @@ const editoriaOptions = [
   { value: "Constitucional", label: "Constitucional" },
 ];
 
+const editoriaOptionsRequired = editoriaOptions.filter(o => o.value !== "");
+
 const statusOptions = [
+  { value: "", label: "Todos os status" },
   { value: "draft", label: "Rascunho" },
   { value: "review", label: "Revisão" },
   { value: "approved", label: "Aprovado" },
@@ -209,40 +209,13 @@ const statusOptions = [
 export function ConteudosPage() {
   const navigate = useNavigate();
   const [items, setItems] = useState(initialConteudos);
-  const [filter, setFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("");
+  const [typeFilter, setTypeFilter] = useState("");
+  const [editoriaFilter, setEditoriaFilter] = useState("");
   const [search, setSearch] = useState("");
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [editing, setEditing] = useState<Conteudo | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Conteudo | null>(null);
 
-  // Form state
-  const [form, setForm] = useState({ title: "", type: "Notícia", editoria: "Tributário", author: "", status: "draft", body: "" });
-
-  const openCreate = () => {
-    navigate("/admin/conteudos/tipo");
-  };
-
-  const openEdit = (item: Conteudo) => {
-    setEditing(item);
-    setForm({ title: item.title, type: item.type, editoria: item.editoria, author: item.author, status: item.status, body: item.body });
-    setDialogOpen(true);
-  };
-
-  const handleSave = () => {
-    if (!form.title.trim()) { toast.error("Título é obrigatório"); return; }
-    if (!form.author.trim()) { toast.error("Autor é obrigatório"); return; }
-
-    if (editing) {
-      setItems((prev) => prev.map((i) => i.id === editing.id ? { ...i, ...form } : i));
-      toast.success("Conteúdo atualizado");
-    } else {
-      const now = new Date();
-      const dateStr = `${now.getDate()} ${now.toLocaleString("pt-BR", { month: "short" })} ${now.getFullYear()}`;
-      setItems((prev) => [...prev, { id: uid(), ...form, date: dateStr, views: 0 }]);
-      toast.success("Conteúdo criado");
-    }
-    setDialogOpen(false);
-  };
+  const openCreate = () => navigate("/admin/conteudos/tipo");
 
   const handleDelete = () => {
     if (!deleteTarget) return;
@@ -252,7 +225,9 @@ export function ConteudosPage() {
   };
 
   const filtered = items
-    .filter((c) => filter === "all" || c.status === filter)
+    .filter((c) => !statusFilter || c.status === statusFilter)
+    .filter((c) => !typeFilter || c.type === typeFilter)
+    .filter((c) => !editoriaFilter || c.editoria === editoriaFilter)
     .filter((c) => !search || c.title.toLowerCase().includes(search.toLowerCase()) || c.author.toLowerCase().includes(search.toLowerCase()));
 
   return (
@@ -261,19 +236,21 @@ export function ConteudosPage() {
         <PrimaryBtn onClick={openCreate} icon={Plus}>Novo conteúdo</PrimaryBtn>
       </PageHeader>
 
-      {/* Filters */}
-      <div className="flex items-center gap-3">
+      {/* Advanced Filters */}
+      <div className="flex flex-wrap items-center gap-3">
         <div className="relative flex-1 max-w-xs">
           <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" strokeWidth={1.5} />
-          <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Buscar conteúdos..." className="h-9 w-full rounded-md border border-input bg-card pl-8 pr-3 text-[13px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring transition-colors" />
+          <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Buscar por título ou autor..." className="h-9 w-full rounded-md border border-input bg-card pl-8 pr-3 text-[13px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring transition-colors" />
         </div>
-        <div className="flex items-center gap-1.5">
-          {["all", "draft", "review", "published"].map((f) => (
-            <button key={f} onClick={() => setFilter(f)} className={cn("h-8 rounded-md px-3 text-[12px] font-medium transition-colors", filter === f ? "bg-primary text-primary-foreground" : "bg-card text-muted-foreground hover:text-foreground border border-input")}>
-              {f === "all" ? "Todos" : statusLabels[f]}
-            </button>
-          ))}
-        </div>
+        <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="h-9 rounded-md border border-input bg-card px-3 text-[12px] text-foreground focus:outline-none focus:ring-1 focus:ring-ring transition-colors">
+          {statusOptions.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+        </select>
+        <select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)} className="h-9 rounded-md border border-input bg-card px-3 text-[12px] text-foreground focus:outline-none focus:ring-1 focus:ring-ring transition-colors">
+          {conteudoTypes.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+        </select>
+        <select value={editoriaFilter} onChange={(e) => setEditoriaFilter(e.target.value)} className="h-9 rounded-md border border-input bg-card px-3 text-[12px] text-foreground focus:outline-none focus:ring-1 focus:ring-ring transition-colors">
+          {editoriaOptions.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+        </select>
       </div>
 
       {/* Table */}
@@ -286,6 +263,7 @@ export function ConteudosPage() {
               <th className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground hidden lg:table-cell">Editoria</th>
               <th className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground hidden md:table-cell">Autor</th>
               <th className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Status</th>
+              <th className="px-4 py-3 text-center text-[11px] font-semibold uppercase tracking-wider text-muted-foreground hidden lg:table-cell">Flags</th>
               <th className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground hidden lg:table-cell">Data</th>
               <th className="px-4 py-3 text-right text-[11px] font-semibold uppercase tracking-wider text-muted-foreground hidden md:table-cell">Views</th>
               <th className="w-10"></th>
@@ -304,62 +282,34 @@ export function ConteudosPage() {
                     {statusLabels[item.status]}
                   </span>
                 </td>
+                <td className="px-4 py-3 hidden lg:table-cell">
+                  <div className="flex items-center justify-center gap-1.5">
+                    {item.isUrgent && <Zap className="h-3 w-3 text-destructive" strokeWidth={2} />}
+                    {item.isHome && <Home className="h-3 w-3 text-bronze" strokeWidth={2} />}
+                    {!item.hasImage && <ImageOff className="h-3 w-3 text-muted-foreground/50" strokeWidth={1.5} />}
+                    {!item.hasSeo && <AlertTriangle className="h-3 w-3 text-status-review/60" strokeWidth={1.5} />}
+                  </div>
+                </td>
                 <td className="px-4 py-3 hidden lg:table-cell"><span className="text-[12px] text-muted-foreground tabular-nums">{item.date}</span></td>
                 <td className="px-4 py-3 text-right hidden md:table-cell"><span className="text-[12px] text-muted-foreground tabular-nums">{item.views > 0 ? item.views.toLocaleString() : "—"}</span></td>
-                <td className="px-3 py-3"><DropdownActions onEdit={() => openEdit(item)} onDelete={() => setDeleteTarget(item)} /></td>
+                <td className="px-3 py-3">
+                  <DropdownActions
+                    onEdit={() => navigate(`/admin/conteudos/${item.id}/editar`)}
+                    onDelete={() => setDeleteTarget(item)}
+                  />
+                </td>
               </tr>
             ))}
             {filtered.length === 0 && (
-              <tr><td colSpan={8} className="px-5 py-12 text-center text-[13px] text-muted-foreground">Nenhum conteúdo encontrado.</td></tr>
+              <tr><td colSpan={9} className="px-5 py-12 text-center text-[13px] text-muted-foreground">Nenhum conteúdo encontrado.</td></tr>
             )}
           </tbody>
         </table>
       </div>
 
       <div className="flex items-center justify-between text-[12px] text-muted-foreground">
-        <span>{filtered.length} conteúdo{filtered.length !== 1 ? "s" : ""}</span>
+        <span>{filtered.length} conteúdo{filtered.length !== 1 ? "s" : ""} {(statusFilter || typeFilter || editoriaFilter) ? "(filtrado)" : ""}</span>
       </div>
-
-      {/* Create/Edit Dialog */}
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="sm:max-w-lg">
-          <DialogHeader>
-            <DialogTitle className="font-ui text-[15px]">{editing ? "Editar conteúdo" : "Novo conteúdo"}</DialogTitle>
-            <DialogDescription className="text-[13px]">{editing ? "Atualize os campos abaixo." : "Preencha os campos para criar um novo conteúdo."}</DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4 py-2">
-            <FormField label="Título">
-              <FormInput value={form.title} onChange={(e) => setForm({ ...form, title: (e.target as HTMLInputElement).value })} placeholder="Título do conteúdo" />
-            </FormField>
-            <div className="grid grid-cols-2 gap-3">
-              <FormField label="Tipo">
-                <FormSelect value={form.type} onChange={(v) => setForm({ ...form, type: v })} options={conteudoTypes} />
-              </FormField>
-              <FormField label="Editoria">
-                <FormSelect value={form.editoria} onChange={(v) => setForm({ ...form, editoria: v })} options={editoriaOptions} />
-              </FormField>
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              <FormField label="Autor">
-                <FormSelect value={form.author} onChange={(v) => setForm({ ...form, author: v })} options={[{ value: "", label: "Selecionar autor..." }, ...initialAutoresShared.map((a) => ({ value: a.name, label: a.name }))]} />
-              </FormField>
-              <FormField label="Status">
-                <FormSelect value={form.status} onChange={(v) => setForm({ ...form, status: v })} options={statusOptions} />
-              </FormField>
-            </div>
-            <FormField label="Corpo do texto">
-              <FormTextarea value={form.body} onChange={(e) => setForm({ ...form, body: e.target.value })} placeholder="Escreva o conteúdo aqui..." rows={4} />
-            </FormField>
-          </div>
-          <DialogFooter className="gap-2">
-            <button onClick={() => setDialogOpen(false)} className="h-9 rounded-md border border-input bg-card px-4 text-[13px] font-medium text-foreground hover:bg-secondary transition-colors">Cancelar</button>
-            <button onClick={handleSave} className="h-9 rounded-md bg-primary px-4 text-[13px] font-medium text-primary-foreground hover:bg-primary/90 transition-colors flex items-center gap-1.5">
-              <Save className="h-3.5 w-3.5" strokeWidth={2} />
-              {editing ? "Salvar" : "Criar"}
-            </button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
 
       <ConfirmDialog open={!!deleteTarget} onClose={() => setDeleteTarget(null)} onConfirm={handleDelete} title="Excluir conteúdo" description={`Tem certeza que deseja excluir "${deleteTarget?.title}"? Esta ação não pode ser desfeita.`} />
     </div>
@@ -370,15 +320,15 @@ export function ConteudosPage() {
    EDITORIAS
    ═══════════════════════════════════════════════ */
 
-type Editoria = { id: number; name: string; slug: string; description: string; count: number };
+type Editoria = { id: number; name: string; slug: string; description: string; descSeo: string; count: number; visible: boolean; homeDestaque: boolean; order: number; editor: string };
 
 const initialEditorias: Editoria[] = [
-  { id: 1, name: "Tributário", slug: "tributario", description: "Decisões e análises tributárias", count: 42 },
-  { id: 2, name: "Empresarial", slug: "empresarial", description: "Direito corporativo e societário", count: 35 },
-  { id: 3, name: "Imobiliário", slug: "imobiliario", description: "Legislação e mercado imobiliário", count: 28 },
-  { id: 4, name: "Sucessório", slug: "sucessorio", description: "Herança, inventário e planejamento", count: 19 },
-  { id: 5, name: "Trabalhista", slug: "trabalhista", description: "Relações de trabalho e jurisprudência", count: 23 },
-  { id: 6, name: "Constitucional", slug: "constitucional", description: "Direito constitucional e garantias", count: 15 },
+  { id: 1, name: "Tributário", slug: "tributario", description: "Decisões e análises tributárias", descSeo: "Acompanhe as decisões tributárias mais relevantes do Brasil.", count: 42, visible: true, homeDestaque: true, order: 1, editor: "Ana Beatriz Duarte" },
+  { id: 2, name: "Empresarial", slug: "empresarial", description: "Direito corporativo e societário", descSeo: "Análises de direito empresarial, M&A e compliance.", count: 35, visible: true, homeDestaque: true, order: 2, editor: "João Pedro Silva" },
+  { id: 3, name: "Imobiliário", slug: "imobiliario", description: "Legislação e mercado imobiliário", descSeo: "Cobertura jurídica do mercado imobiliário brasileiro.", count: 28, visible: true, homeDestaque: true, order: 3, editor: "Mariana Costa" },
+  { id: 4, name: "Sucessório", slug: "sucessorio", description: "Herança, inventário e planejamento", descSeo: "Análises de direito sucessório, herança e inventário.", count: 19, visible: true, homeDestaque: true, order: 4, editor: "Prof. Ricardo Alves" },
+  { id: 5, name: "Trabalhista", slug: "trabalhista", description: "Relações de trabalho e jurisprudência", descSeo: "", count: 23, visible: false, homeDestaque: false, order: 5, editor: "" },
+  { id: 6, name: "Constitucional", slug: "constitucional", description: "Direito constitucional e garantias", descSeo: "", count: 15, visible: false, homeDestaque: false, order: 6, editor: "" },
 ];
 
 const editoriaIcons = [Scale, Building2, Briefcase, BookOpen, Users, GraduationCap];
@@ -388,19 +338,19 @@ export function EditoriasPage() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<Editoria | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Editoria | null>(null);
-  const [form, setForm] = useState({ name: "", slug: "", description: "" });
+  const [form, setForm] = useState({ name: "", slug: "", description: "", descSeo: "", visible: true, homeDestaque: false, editor: "" });
 
-  const openCreate = () => { setEditing(null); setForm({ name: "", slug: "", description: "" }); setDialogOpen(true); };
-  const openEdit = (item: Editoria) => { setEditing(item); setForm({ name: item.name, slug: item.slug, description: item.description }); setDialogOpen(true); };
+  const openCreate = () => { setEditing(null); setForm({ name: "", slug: "", description: "", descSeo: "", visible: true, homeDestaque: false, editor: "" }); setDialogOpen(true); };
+  const openEdit = (item: Editoria) => { setEditing(item); setForm({ name: item.name, slug: item.slug, description: item.description, descSeo: item.descSeo, visible: item.visible, homeDestaque: item.homeDestaque, editor: item.editor }); setDialogOpen(true); };
 
   const handleSave = () => {
     if (!form.name.trim()) { toast.error("Nome é obrigatório"); return; }
     const slug = form.slug.trim() || form.name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
     if (editing) {
-      setItems((p) => p.map((i) => i.id === editing.id ? { ...i, name: form.name, slug, description: form.description } : i));
+      setItems((p) => p.map((i) => i.id === editing.id ? { ...i, ...form, slug } : i));
       toast.success("Editoria atualizada");
     } else {
-      setItems((p) => [...p, { id: uid(), name: form.name, slug, description: form.description, count: 0 }]);
+      setItems((p) => [...p, { id: uid(), ...form, slug, count: 0, order: p.length + 1 }]);
       toast.success("Editoria criada");
     }
     setDialogOpen(false);
@@ -415,7 +365,7 @@ export function EditoriasPage() {
 
   return (
     <div className="space-y-5">
-      <PageHeader title="Editorias" subtitle="Organize o conteúdo por editorias temáticas">
+      <PageHeader title="Editorias" subtitle="Organize o conteúdo por editorias temáticas — controlam a navegação pública">
         <PrimaryBtn onClick={openCreate} icon={Plus}>Nova editoria</PrimaryBtn>
       </PageHeader>
 
@@ -423,19 +373,32 @@ export function EditoriasPage() {
         {items.map((ed, idx) => {
           const Icon = editoriaIcons[idx % editoriaIcons.length];
           return (
-            <div key={ed.id} className="rounded-lg bg-card p-5 shadow-editorial hover:shadow-editorial-lg transition-shadow group">
+            <div key={ed.id} className={cn("rounded-lg bg-card p-5 shadow-editorial hover:shadow-editorial-lg transition-shadow group", !ed.visible && "opacity-60")}>
               <div className="flex items-start justify-between">
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
                   <Icon className="h-5 w-5" strokeWidth={1.5} />
                 </div>
-                <DropdownActions onEdit={() => openEdit(ed)} onDelete={() => setDeleteTarget(ed)} />
+                <div className="flex items-center gap-2">
+                  {ed.visible ? (
+                    <span className="text-[9px] font-bold text-status-published bg-status-published/10 px-1.5 py-0.5 rounded-full uppercase tracking-wider">Visível</span>
+                  ) : (
+                    <span className="text-[9px] font-bold text-muted-foreground bg-muted px-1.5 py-0.5 rounded-full uppercase tracking-wider">Oculta</span>
+                  )}
+                  <DropdownActions onEdit={() => openEdit(ed)} onDelete={() => setDeleteTarget(ed)} />
+                </div>
               </div>
               <h3 className="mt-3 text-[15px] font-semibold text-foreground font-ui">{ed.name}</h3>
               <p className="mt-0.5 text-[12px] text-muted-foreground">/{ed.slug}</p>
               {ed.description && <p className="mt-1 text-[12px] text-muted-foreground">{ed.description}</p>}
-              <div className="mt-3 flex items-center gap-1.5 text-[12px] text-muted-foreground">
-                <FileText className="h-3.5 w-3.5" strokeWidth={1.5} />
-                <span className="tabular-nums">{ed.count} conteúdos</span>
+              <div className="mt-3 flex items-center justify-between text-[11px] text-muted-foreground">
+                <div className="flex items-center gap-1.5">
+                  <FileText className="h-3.5 w-3.5" strokeWidth={1.5} />
+                  <span className="tabular-nums">{ed.count} conteúdos</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  {ed.homeDestaque && <Home className="h-3 w-3 text-bronze" strokeWidth={2} />}
+                  {ed.editor && <span className="text-[10px] text-bronze truncate max-w-[80px]">{ed.editor.split(" ")[0]}</span>}
+                </div>
               </div>
             </div>
           );
@@ -443,21 +406,39 @@ export function EditoriasPage() {
       </div>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-lg">
           <DialogHeader>
             <DialogTitle className="font-ui text-[15px]">{editing ? "Editar editoria" : "Nova editoria"}</DialogTitle>
             <DialogDescription className="text-[13px]">{editing ? "Atualize os dados da editoria." : "Preencha os campos para criar uma editoria."}</DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-2">
-            <FormField label="Nome">
-              <FormInput value={form.name} onChange={(e) => setForm({ ...form, name: (e.target as HTMLInputElement).value })} placeholder="Ex: Tributário" />
-            </FormField>
-            <FormField label="Slug">
-              <FormInput value={form.slug} onChange={(e) => setForm({ ...form, slug: (e.target as HTMLInputElement).value })} placeholder="tributario (gerado automaticamente)" />
-            </FormField>
+            <div className="grid grid-cols-2 gap-3">
+              <FormField label="Nome público">
+                <FormInput value={form.name} onChange={(e) => setForm({ ...form, name: (e.target as HTMLInputElement).value })} placeholder="Ex: Tributário" />
+              </FormField>
+              <FormField label="Slug">
+                <FormInput value={form.slug} onChange={(e) => setForm({ ...form, slug: (e.target as HTMLInputElement).value })} placeholder="tributario" />
+              </FormField>
+            </div>
             <FormField label="Descrição">
               <FormTextarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} placeholder="Breve descrição da editoria" rows={2} />
             </FormField>
+            <FormField label="Descrição SEO">
+              <FormTextarea value={form.descSeo} onChange={(e) => setForm({ ...form, descSeo: e.target.value })} placeholder="Descrição para mecanismos de busca" rows={2} />
+            </FormField>
+            <FormField label="Editor responsável">
+              <FormSelect value={form.editor} onChange={(v) => setForm({ ...form, editor: v })} options={[{ value: "", label: "Nenhum" }, ...initialAutoresShared.map(a => ({ value: a.name, label: a.name }))]} />
+            </FormField>
+            <div className="flex items-center gap-6">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" checked={form.visible} onChange={(e) => setForm({ ...form, visible: e.target.checked })} className="rounded border-input" />
+                <span className="text-[12px] text-foreground">Visível no menu</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" checked={form.homeDestaque} onChange={(e) => setForm({ ...form, homeDestaque: e.target.checked })} className="rounded border-input" />
+                <span className="text-[12px] text-foreground">Destaque na home</span>
+              </label>
+            </div>
           </div>
           <DialogFooter className="gap-2">
             <button onClick={() => setDialogOpen(false)} className="h-9 rounded-md border border-input bg-card px-4 text-[13px] font-medium text-foreground hover:bg-secondary transition-colors">Cancelar</button>
@@ -477,16 +458,26 @@ export function EditoriasPage() {
    AUTORES
    ═══════════════════════════════════════════════ */
 
-type Autor = { id: number; name: string; role: string; email: string; bio: string; articles: number; initials: string };
+type Autor = { id: number; name: string; role: string; email: string; bio: string; articles: number; initials: string; specialty: string; slug: string; isColumnist: boolean };
 
 const initialAutores: Autor[] = [...initialAutoresShared];
 
 const roleOptions = [
   { value: "Editora Sênior", label: "Editor(a) Sênior" },
+  { value: "Editor Assistente", label: "Editor Assistente" },
   { value: "Repórter Jurídico", label: "Repórter Jurídico" },
   { value: "Colunista", label: "Colunista" },
   { value: "Colaborador", label: "Colaborador" },
-  { value: "Editor Assistente", label: "Editor Assistente" },
+];
+
+const specialtyOptions = [
+  { value: "", label: "Nenhuma" },
+  { value: "Direito Tributário", label: "Direito Tributário" },
+  { value: "Direito Empresarial", label: "Direito Empresarial" },
+  { value: "Direito Imobiliário", label: "Direito Imobiliário" },
+  { value: "Direito Sucessório", label: "Direito Sucessório" },
+  { value: "Direito Constitucional", label: "Direito Constitucional" },
+  { value: "Direito Trabalhista", label: "Direito Trabalhista" },
 ];
 
 function getInitials(name: string) {
@@ -498,19 +489,20 @@ export function AutoresPage() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<Autor | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Autor | null>(null);
-  const [form, setForm] = useState({ name: "", role: "Repórter Jurídico", email: "", bio: "" });
+  const [form, setForm] = useState({ name: "", role: "Repórter Jurídico", email: "", bio: "", specialty: "", slug: "", isColumnist: false });
 
-  const openCreate = () => { setEditing(null); setForm({ name: "", role: "Repórter Jurídico", email: "", bio: "" }); setDialogOpen(true); };
-  const openEdit = (item: Autor) => { setEditing(item); setForm({ name: item.name, role: item.role, email: item.email, bio: item.bio }); setDialogOpen(true); };
+  const openCreate = () => { setEditing(null); setForm({ name: "", role: "Repórter Jurídico", email: "", bio: "", specialty: "", slug: "", isColumnist: false }); setDialogOpen(true); };
+  const openEdit = (item: Autor) => { setEditing(item); setForm({ name: item.name, role: item.role, email: item.email, bio: item.bio, specialty: item.specialty, slug: item.slug, isColumnist: item.isColumnist }); setDialogOpen(true); };
 
   const handleSave = () => {
     if (!form.name.trim()) { toast.error("Nome é obrigatório"); return; }
     if (!form.email.trim()) { toast.error("E-mail é obrigatório"); return; }
+    const slug = form.slug || form.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-");
     if (editing) {
-      setItems((p) => p.map((i) => i.id === editing.id ? { ...i, ...form, initials: getInitials(form.name) } : i));
+      setItems((p) => p.map((i) => i.id === editing.id ? { ...i, ...form, slug, initials: getInitials(form.name) } : i));
       toast.success("Autor atualizado");
     } else {
-      setItems((p) => [...p, { id: uid(), ...form, articles: 0, initials: getInitials(form.name) }]);
+      setItems((p) => [...p, { id: uid(), ...form, slug, articles: 0, initials: getInitials(form.name) }]);
       toast.success("Autor criado");
     }
     setDialogOpen(false);
@@ -525,7 +517,7 @@ export function AutoresPage() {
 
   return (
     <div className="space-y-5">
-      <PageHeader title="Autores" subtitle="Cadastre e gerencie autores internos e colaboradores">
+      <PageHeader title="Autores" subtitle="Cadastre e gerencie autores, colunistas e colaboradores">
         <PrimaryBtn onClick={openCreate} icon={Plus}>Novo autor</PrimaryBtn>
       </PageHeader>
 
@@ -535,7 +527,8 @@ export function AutoresPage() {
             <tr className="border-b border-border">
               <th className="px-5 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Autor</th>
               <th className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground hidden md:table-cell">Papel</th>
-              <th className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground hidden lg:table-cell">E-mail</th>
+              <th className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground hidden lg:table-cell">Especialidade</th>
+              <th className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground hidden lg:table-cell">Slug</th>
               <th className="px-4 py-3 text-right text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Artigos</th>
               <th className="w-10"></th>
             </tr>
@@ -546,11 +539,18 @@ export function AutoresPage() {
                 <td className="px-5 py-3">
                   <div className="flex items-center gap-3">
                     <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-[11px] font-semibold text-primary-foreground">{a.initials}</div>
-                    <span className="text-[13px] font-medium text-foreground">{a.name}</span>
+                    <div>
+                      <span className="text-[13px] font-medium text-foreground flex items-center gap-1.5">
+                        {a.name}
+                        {a.isColumnist && <Star className="h-3 w-3 text-bronze" strokeWidth={2} />}
+                      </span>
+                      <span className="text-[11px] text-muted-foreground">{a.email}</span>
+                    </div>
                   </div>
                 </td>
                 <td className="px-4 py-3 hidden md:table-cell"><span className="text-[12px] text-bronze font-medium">{a.role}</span></td>
-                <td className="px-4 py-3 hidden lg:table-cell"><span className="text-[12px] text-muted-foreground">{a.email}</span></td>
+                <td className="px-4 py-3 hidden lg:table-cell"><span className="text-[12px] text-muted-foreground">{a.specialty || "—"}</span></td>
+                <td className="px-4 py-3 hidden lg:table-cell"><span className="text-[11px] text-muted-foreground">/{a.slug}</span></td>
                 <td className="px-4 py-3 text-right"><span className="text-[13px] font-medium text-foreground tabular-nums">{a.articles}</span></td>
                 <td className="px-3 py-3"><DropdownActions onEdit={() => openEdit(a)} onDelete={() => setDeleteTarget(a)} /></td>
               </tr>
@@ -560,24 +560,38 @@ export function AutoresPage() {
       </div>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-lg">
           <DialogHeader>
             <DialogTitle className="font-ui text-[15px]">{editing ? "Editar autor" : "Novo autor"}</DialogTitle>
             <DialogDescription className="text-[13px]">{editing ? "Atualize os dados do autor." : "Preencha os campos para cadastrar um novo autor."}</DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-2">
-            <FormField label="Nome completo">
-              <FormInput value={form.name} onChange={(e) => setForm({ ...form, name: (e.target as HTMLInputElement).value })} placeholder="Nome do autor" />
-            </FormField>
-            <FormField label="E-mail">
-              <FormInput type="email" value={form.email} onChange={(e) => setForm({ ...form, email: (e.target as HTMLInputElement).value })} placeholder="email@veredito.com" />
-            </FormField>
-            <FormField label="Papel">
-              <FormSelect value={form.role} onChange={(v) => setForm({ ...form, role: v })} options={roleOptions} />
+            <div className="grid grid-cols-2 gap-3">
+              <FormField label="Nome completo">
+                <FormInput value={form.name} onChange={(e) => setForm({ ...form, name: (e.target as HTMLInputElement).value })} placeholder="Nome do autor" />
+              </FormField>
+              <FormField label="E-mail">
+                <FormInput type="email" value={form.email} onChange={(e) => setForm({ ...form, email: (e.target as HTMLInputElement).value })} placeholder="email@veredito.com" />
+              </FormField>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <FormField label="Papel">
+                <FormSelect value={form.role} onChange={(v) => setForm({ ...form, role: v })} options={roleOptions} />
+              </FormField>
+              <FormField label="Especialidade">
+                <FormSelect value={form.specialty} onChange={(v) => setForm({ ...form, specialty: v })} options={specialtyOptions} />
+              </FormField>
+            </div>
+            <FormField label="Slug da página pública">
+              <FormInput value={form.slug} onChange={(e) => setForm({ ...form, slug: (e.target as HTMLInputElement).value })} placeholder="ana-beatriz-duarte" />
             </FormField>
             <FormField label="Bio">
-              <FormTextarea value={form.bio} onChange={(e) => setForm({ ...form, bio: e.target.value })} placeholder="Breve biografia" rows={2} />
+              <FormTextarea value={form.bio} onChange={(e) => setForm({ ...form, bio: e.target.value })} placeholder="Breve biografia que aparece nas matérias e no perfil público" rows={3} />
             </FormField>
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" checked={form.isColumnist} onChange={(e) => setForm({ ...form, isColumnist: e.target.checked })} className="rounded border-input" />
+              <span className="text-[12px] text-foreground">Colunista (aparece na seção Opinião)</span>
+            </label>
           </div>
           <DialogFooter className="gap-2">
             <button onClick={() => setDialogOpen(false)} className="h-9 rounded-md border border-input bg-card px-4 text-[13px] font-medium text-foreground hover:bg-secondary transition-colors">Cancelar</button>
@@ -597,15 +611,15 @@ export function AutoresPage() {
    FONTES
    ═══════════════════════════════════════════════ */
 
-type Fonte = { id: number; name: string; sigla: string; type: string; url: string; articles: number };
+type Fonte = { id: number; name: string; sigla: string; type: string; url: string; articles: number; editoriaPadrao: string; confiabilidade: string; monitorada: boolean };
 
 const initialFontes: Fonte[] = [
-  { id: 1, name: "Supremo Tribunal Federal", sigla: "STF", type: "Tribunal Superior", url: "stf.jus.br", articles: 58 },
-  { id: 2, name: "Superior Tribunal de Justiça", sigla: "STJ", type: "Tribunal Superior", url: "stj.jus.br", articles: 43 },
-  { id: 3, name: "Tribunal Superior do Trabalho", sigla: "TST", type: "Tribunal Superior", url: "tst.jus.br", articles: 31 },
-  { id: 4, name: "Conselho Nacional de Justiça", sigla: "CNJ", type: "Órgão Regulador", url: "cnj.jus.br", articles: 22 },
-  { id: 5, name: "Receita Federal", sigla: "RFB", type: "Órgão Governamental", url: "gov.br/receitafederal", articles: 17 },
-  { id: 6, name: "Diário Oficial da União", sigla: "DOU", type: "Publicação Oficial", url: "dou.gov.br", articles: 39 },
+  { id: 1, name: "Supremo Tribunal Federal", sigla: "STF", type: "Tribunal Superior", url: "stf.jus.br", articles: 58, editoriaPadrao: "Tributário", confiabilidade: "Alta", monitorada: true },
+  { id: 2, name: "Superior Tribunal de Justiça", sigla: "STJ", type: "Tribunal Superior", url: "stj.jus.br", articles: 43, editoriaPadrao: "Empresarial", confiabilidade: "Alta", monitorada: true },
+  { id: 3, name: "Tribunal Superior do Trabalho", sigla: "TST", type: "Tribunal Superior", url: "tst.jus.br", articles: 31, editoriaPadrao: "Trabalhista", confiabilidade: "Alta", monitorada: true },
+  { id: 4, name: "Conselho Nacional de Justiça", sigla: "CNJ", type: "Órgão Regulador", url: "cnj.jus.br", articles: 22, editoriaPadrao: "", confiabilidade: "Alta", monitorada: false },
+  { id: 5, name: "Receita Federal", sigla: "RFB", type: "Órgão Governamental", url: "gov.br/receitafederal", articles: 17, editoriaPadrao: "Tributário", confiabilidade: "Alta", monitorada: true },
+  { id: 6, name: "Diário Oficial da União", sigla: "DOU", type: "Publicação Oficial", url: "dou.gov.br", articles: 39, editoriaPadrao: "", confiabilidade: "Alta", monitorada: false },
 ];
 
 const fonteTypeOptions = [
@@ -616,15 +630,21 @@ const fonteTypeOptions = [
   { value: "Instituição Acadêmica", label: "Instituição Acadêmica" },
 ];
 
+const confiabilidadeOptions = [
+  { value: "Alta", label: "Alta" },
+  { value: "Média", label: "Média" },
+  { value: "Baixa", label: "Baixa" },
+];
+
 export function FontesPage() {
   const [items, setItems] = useState(initialFontes);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<Fonte | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Fonte | null>(null);
-  const [form, setForm] = useState({ name: "", sigla: "", type: "Tribunal Superior", url: "" });
+  const [form, setForm] = useState({ name: "", sigla: "", type: "Tribunal Superior", url: "", editoriaPadrao: "", confiabilidade: "Alta", monitorada: false });
 
-  const openCreate = () => { setEditing(null); setForm({ name: "", sigla: "", type: "Tribunal Superior", url: "" }); setDialogOpen(true); };
-  const openEdit = (item: Fonte) => { setEditing(item); setForm({ name: item.name, sigla: item.sigla, type: item.type, url: item.url }); setDialogOpen(true); };
+  const openCreate = () => { setEditing(null); setForm({ name: "", sigla: "", type: "Tribunal Superior", url: "", editoriaPadrao: "", confiabilidade: "Alta", monitorada: false }); setDialogOpen(true); };
+  const openEdit = (item: Fonte) => { setEditing(item); setForm({ name: item.name, sigla: item.sigla, type: item.type, url: item.url, editoriaPadrao: item.editoriaPadrao, confiabilidade: item.confiabilidade, monitorada: item.monitorada }); setDialogOpen(true); };
 
   const handleSave = () => {
     if (!form.name.trim()) { toast.error("Nome é obrigatório"); return; }
@@ -660,6 +680,7 @@ export function FontesPage() {
                 <Scale className="h-5 w-5" strokeWidth={1.5} />
               </div>
               <div className="flex items-center gap-2">
+                {f.monitorada && <Activity className="h-3 w-3 text-status-published" strokeWidth={2} />}
                 <span className="text-[11px] font-bold text-bronze tracking-wider">{f.sigla}</span>
                 <DropdownActions onEdit={() => openEdit(f)} onDelete={() => setDeleteTarget(f)} />
               </div>
@@ -673,12 +694,15 @@ export function FontesPage() {
               </div>
               <span className="tabular-nums">{f.articles} ref.</span>
             </div>
+            {f.editoriaPadrao && (
+              <p className="mt-2 text-[10px] text-bronze font-medium">Editoria: {f.editoriaPadrao}</p>
+            )}
           </div>
         ))}
       </div>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-lg">
           <DialogHeader>
             <DialogTitle className="font-ui text-[15px]">{editing ? "Editar fonte" : "Nova fonte"}</DialogTitle>
             <DialogDescription className="text-[13px]">{editing ? "Atualize os dados da fonte." : "Cadastre uma nova fonte oficial."}</DialogDescription>
@@ -687,17 +711,27 @@ export function FontesPage() {
             <FormField label="Nome completo">
               <FormInput value={form.name} onChange={(e) => setForm({ ...form, name: (e.target as HTMLInputElement).value })} placeholder="Supremo Tribunal Federal" />
             </FormField>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-3 gap-3">
               <FormField label="Sigla">
                 <FormInput value={form.sigla} onChange={(e) => setForm({ ...form, sigla: (e.target as HTMLInputElement).value.toUpperCase() })} placeholder="STF" maxLength={10} />
               </FormField>
               <FormField label="Tipo">
                 <FormSelect value={form.type} onChange={(v) => setForm({ ...form, type: v })} options={fonteTypeOptions} />
               </FormField>
+              <FormField label="Confiabilidade">
+                <FormSelect value={form.confiabilidade} onChange={(v) => setForm({ ...form, confiabilidade: v })} options={confiabilidadeOptions} />
+              </FormField>
             </div>
             <FormField label="URL">
               <FormInput value={form.url} onChange={(e) => setForm({ ...form, url: (e.target as HTMLInputElement).value })} placeholder="stf.jus.br" />
             </FormField>
+            <FormField label="Editoria padrão">
+              <FormSelect value={form.editoriaPadrao} onChange={(v) => setForm({ ...form, editoriaPadrao: v })} options={[{ value: "", label: "Nenhuma" }, ...editoriaOptionsRequired]} />
+            </FormField>
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" checked={form.monitorada} onChange={(e) => setForm({ ...form, monitorada: e.target.checked })} className="rounded border-input" />
+              <span className="text-[12px] text-foreground">Fonte monitorada (recebe alertas de novas publicações)</span>
+            </label>
           </div>
           <DialogFooter className="gap-2">
             <button onClick={() => setDialogOpen(false)} className="h-9 rounded-md border border-input bg-card px-4 text-[13px] font-medium text-foreground hover:bg-secondary transition-colors">Cancelar</button>
@@ -717,146 +751,89 @@ export function FontesPage() {
    HOME & DESTAQUES
    ═══════════════════════════════════════════════ */
 
-type Destaque = { id: number; position: number; title: string; editoria: string; type: string };
+type HomeZone = { id: string; name: string; mode: "manual" | "auto"; items: { id: number; title: string; editoria: string }[]; maxItems: number };
 
-const initialDestaques: Destaque[] = [
-  { id: 1, position: 1, title: "STF suspende efeitos de lei estadual sobre ICMS", editoria: "Tributário", type: "Manchete" },
-  { id: 2, position: 2, title: "Impacto da reforma tributária nos escritórios", editoria: "Tributário", type: "Destaque" },
-  { id: 3, position: 3, title: "O futuro do direito sucessório digital", editoria: "Sucessório", type: "Destaque" },
-  { id: 4, position: 4, title: "Novo marco legal das garantias entra em vigor", editoria: "Empresarial", type: "Destaque" },
+const initialZones: HomeZone[] = [
+  { id: "manchete", name: "Manchete principal", mode: "manual", maxItems: 1, items: [{ id: 1, title: "STF suspende efeitos de lei estadual sobre ICMS", editoria: "Tributário" }] },
+  { id: "secundarios", name: "Destaques secundários", mode: "manual", maxItems: 3, items: [
+    { id: 2, title: "Nova lei de recuperação judicial", editoria: "Empresarial" },
+    { id: 3, title: "STJ consolida entendimento sobre usucapião", editoria: "Imobiliário" },
+    { id: 4, title: "TJ-SP reconhece direito de companheiro", editoria: "Sucessório" },
+  ]},
+  { id: "decisoes", name: "Decisões recentes", mode: "auto", maxItems: 4, items: [] },
+  { id: "artigos", name: "Artigos & Análises", mode: "auto", maxItems: 3, items: [] },
+  { id: "opiniao", name: "Opinião", mode: "auto", maxItems: 3, items: [] },
+  { id: "editorias", name: "Editorias", mode: "auto", maxItems: 4, items: [] },
 ];
 
-const destaqueTypeOptions = [
-  { value: "Manchete", label: "Manchete" },
-  { value: "Destaque", label: "Destaque" },
-  { value: "Secundário", label: "Secundário" },
-];
+const urgentConfig = { active: true, title: "STF suspende efeitos de lei estadual sobre ICMS", link: "/decisao/stf-suspende-icms", expiresAt: "Hoje, 20:00" };
 
 export function HomeDestaquesPage() {
-  const [items, setItems] = useState(initialDestaques);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [editing, setEditing] = useState<Destaque | null>(null);
-  const [deleteTarget, setDeleteTarget] = useState<Destaque | null>(null);
-  const [form, setForm] = useState({ title: "", editoria: "Tributário", type: "Destaque" });
-
-  const openCreate = () => { setEditing(null); setForm({ title: "", editoria: "Tributário", type: "Destaque" }); setDialogOpen(true); };
-  const openEdit = (item: Destaque) => { setEditing(item); setForm({ title: item.title, editoria: item.editoria, type: item.type }); setDialogOpen(true); };
-
-  const handleSave = () => {
-    if (!form.title.trim()) { toast.error("Título é obrigatório"); return; }
-    if (editing) {
-      setItems((p) => p.map((i) => i.id === editing.id ? { ...i, ...form } : i));
-      toast.success("Destaque atualizado");
-    } else {
-      const newPos = items.length > 0 ? Math.max(...items.map((i) => i.position)) + 1 : 1;
-      setItems((p) => [...p, { id: uid(), position: newPos, ...form }]);
-      toast.success("Destaque adicionado");
-    }
-    setDialogOpen(false);
-  };
-
-  const handleDelete = () => {
-    if (!deleteTarget) return;
-    setItems((p) => {
-      const filtered = p.filter((i) => i.id !== deleteTarget.id);
-      return filtered.map((item, idx) => ({ ...item, position: idx + 1 }));
-    });
-    toast.success("Destaque removido");
-    setDeleteTarget(null);
-  };
-
-  const moveItem = (id: number, direction: "up" | "down") => {
-    setItems((prev) => {
-      const idx = prev.findIndex((i) => i.id === id);
-      if (idx < 0) return prev;
-      const swapIdx = direction === "up" ? idx - 1 : idx + 1;
-      if (swapIdx < 0 || swapIdx >= prev.length) return prev;
-      const copy = [...prev];
-      [copy[idx], copy[swapIdx]] = [copy[swapIdx], copy[idx]];
-      return copy.map((item, i) => ({ ...item, position: i + 1 }));
-    });
-  };
+  const [zones] = useState(initialZones);
+  const [urgent, setUrgent] = useState(urgentConfig);
 
   return (
     <div className="space-y-5">
-      <PageHeader title="Home & Destaques" subtitle="Controle os destaques da página inicial">
-        <div className="flex gap-2">
-          <SecondaryBtn onClick={() => toast.info("Pré-visualização indisponível sem frontend público.")} icon={Eye}>Pré-visualizar</SecondaryBtn>
-          <PrimaryBtn onClick={openCreate} icon={Plus}>Novo destaque</PrimaryBtn>
-        </div>
+      <PageHeader title="Home & Destaques" subtitle="Controle as zonas editoriais da página inicial">
+        <SecondaryBtn onClick={() => toast.info("Preview da home abrirá em nova aba.")} icon={Eye}>Pré-visualizar home</SecondaryBtn>
       </PageHeader>
 
+      {/* Urgente */}
       <div className="rounded-lg bg-card shadow-editorial overflow-hidden">
         <div className="border-b border-border px-5 py-3.5 flex items-center justify-between">
-          <h3 className="text-[13px] font-semibold text-foreground font-ui">Destaques atuais</h3>
-          <span className="text-[11px] text-muted-foreground">{items.length} posições ativas</span>
+          <h3 className="text-[13px] font-semibold text-foreground font-ui flex items-center gap-2">
+            <Zap className="h-3.5 w-3.5 text-destructive" strokeWidth={2} />
+            Faixa de urgente
+          </h3>
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" checked={urgent.active} onChange={(e) => setUrgent({ ...urgent, active: e.target.checked })} className="rounded border-input" />
+            <span className="text-[11px] text-foreground font-medium">{urgent.active ? "Ativo" : "Inativo"}</span>
+          </label>
         </div>
-        <div className="divide-y divide-border">
-          {items.map((d, idx) => (
-            <div key={d.id} className="flex items-center gap-4 px-5 py-3.5 hover:bg-secondary/50 transition-colors group">
-              <div className="flex flex-col gap-0.5">
-                <button disabled={idx === 0} onClick={() => moveItem(d.id, "up")} className="flex h-5 w-5 items-center justify-center rounded text-muted-foreground hover:bg-secondary disabled:opacity-20 transition-colors">
-                  <ChevronUp className="h-3.5 w-3.5" strokeWidth={1.5} />
-                </button>
-                <button disabled={idx === items.length - 1} onClick={() => moveItem(d.id, "down")} className="flex h-5 w-5 items-center justify-center rounded text-muted-foreground hover:bg-secondary disabled:opacity-20 transition-colors">
-                  <ChevronDown className="h-3.5 w-3.5" strokeWidth={1.5} />
-                </button>
-              </div>
-              <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary/10 text-primary text-[13px] font-bold tabular-nums">
-                {d.position}
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-[13px] font-medium text-foreground truncate">{d.title}</p>
-                <div className="flex items-center gap-2 mt-0.5">
-                  <span className="text-[11px] text-bronze font-medium">{d.editoria}</span>
-                  <span className="text-[11px] text-muted-foreground">· {d.type}</span>
-                </div>
-              </div>
-              <div className="flex items-center gap-1">
-                <button onClick={() => openEdit(d)} className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors">
-                  <Edit className="h-3.5 w-3.5" strokeWidth={1.5} />
-                </button>
-                <button onClick={() => setDeleteTarget(d)} className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-secondary hover:text-destructive transition-colors">
-                  <Trash2 className="h-3.5 w-3.5" strokeWidth={1.5} />
-                </button>
-              </div>
+        {urgent.active && (
+          <div className="px-5 py-4 space-y-3">
+            <div className="flex items-center gap-3 text-[12px]">
+              <span className="text-muted-foreground">Título:</span>
+              <span className="text-foreground font-medium">{urgent.title}</span>
             </div>
-          ))}
-          {items.length === 0 && (
-            <div className="px-5 py-12 text-center text-[13px] text-muted-foreground">Nenhum destaque configurado.</div>
-          )}
-        </div>
-      </div>
-
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="font-ui text-[15px]">{editing ? "Editar destaque" : "Novo destaque"}</DialogTitle>
-            <DialogDescription className="text-[13px]">{editing ? "Atualize o destaque." : "Adicione um novo destaque à home."}</DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4 py-2">
-            <FormField label="Título do conteúdo">
-              <FormInput value={form.title} onChange={(e) => setForm({ ...form, title: (e.target as HTMLInputElement).value })} placeholder="Título do conteúdo em destaque" />
-            </FormField>
-            <div className="grid grid-cols-2 gap-3">
-              <FormField label="Editoria">
-                <FormSelect value={form.editoria} onChange={(v) => setForm({ ...form, editoria: v })} options={editoriaOptions} />
-              </FormField>
-              <FormField label="Tipo de destaque">
-                <FormSelect value={form.type} onChange={(v) => setForm({ ...form, type: v })} options={destaqueTypeOptions} />
-              </FormField>
+            <div className="flex items-center gap-4 text-[11px] text-muted-foreground">
+              <span>Expira: <span className="text-bronze font-medium">{urgent.expiresAt}</span></span>
             </div>
           </div>
-          <DialogFooter className="gap-2">
-            <button onClick={() => setDialogOpen(false)} className="h-9 rounded-md border border-input bg-card px-4 text-[13px] font-medium text-foreground hover:bg-secondary transition-colors">Cancelar</button>
-            <button onClick={handleSave} className="h-9 rounded-md bg-primary px-4 text-[13px] font-medium text-primary-foreground hover:bg-primary/90 transition-colors flex items-center gap-1.5">
-              <Save className="h-3.5 w-3.5" strokeWidth={2} /> {editing ? "Salvar" : "Adicionar"}
-            </button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+        )}
+      </div>
 
-      <ConfirmDialog open={!!deleteTarget} onClose={() => setDeleteTarget(null)} onConfirm={handleDelete} title="Remover destaque" description={`Remover "${deleteTarget?.title}" dos destaques?`} />
+      {/* Zones */}
+      <div className="grid gap-4 lg:grid-cols-2">
+        {zones.map((zone) => (
+          <div key={zone.id} className="rounded-lg bg-card shadow-editorial overflow-hidden">
+            <div className="border-b border-border px-5 py-3.5 flex items-center justify-between">
+              <h3 className="text-[13px] font-semibold text-foreground font-ui">{zone.name}</h3>
+              <div className="flex items-center gap-2">
+                <span className={cn("text-[10px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wider", zone.mode === "auto" ? "bg-status-published/10 text-status-published" : "bg-bronze/10 text-bronze")}>
+                  {zone.mode === "auto" ? "Automático" : "Manual"}
+                </span>
+                <span className="text-[10px] text-muted-foreground">max {zone.maxItems}</span>
+              </div>
+            </div>
+            <div className="p-4">
+              {zone.mode === "manual" && zone.items.length > 0 ? (
+                <div className="space-y-2">
+                  {zone.items.map((item, idx) => (
+                    <div key={item.id} className="flex items-center gap-3 text-[12px]">
+                      <span className="w-5 h-5 rounded bg-primary/10 text-primary flex items-center justify-center text-[10px] font-bold tabular-nums">{idx + 1}</span>
+                      <span className="text-foreground font-medium truncate flex-1">{item.title}</span>
+                      <span className="text-[10px] text-bronze shrink-0">{item.editoria}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-[12px] text-muted-foreground">Preenchimento automático — exibe os conteúdos mais recentes.</p>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -865,12 +842,12 @@ export function HomeDestaquesPage() {
    NEWSLETTER
    ═══════════════════════════════════════════════ */
 
-type NewsletterSend = { id: number; subject: string; sent: string; opens: string; clicks: string; recipients: number };
+type NewsletterSend = { id: number; subject: string; sent: string; opens: string; clicks: string; recipients: number; status: string };
 
 const initialNewsletters: NewsletterSend[] = [
-  { id: 1, subject: "Veredito Semanal #42 — Reforma tributária: o que muda", sent: "18 mar 2026", opens: "42.1%", clicks: "8.3%", recipients: 1102 },
-  { id: 2, subject: "Veredito Semanal #41 — STF e as teses do século", sent: "11 mar 2026", opens: "39.8%", clicks: "7.1%", recipients: 1087 },
-  { id: 3, subject: "Veredito Semanal #40 — Direito digital em debate", sent: "04 mar 2026", opens: "36.5%", clicks: "6.9%", recipients: 1054 },
+  { id: 1, subject: "Veredito Semanal #42 — Reforma tributária: o que muda", sent: "18 mar 2026", opens: "42.1%", clicks: "8.3%", recipients: 1102, status: "sent" },
+  { id: 2, subject: "Veredito Semanal #41 — STF e as teses do século", sent: "11 mar 2026", opens: "39.8%", clicks: "7.1%", recipients: 1087, status: "sent" },
+  { id: 3, subject: "Veredito Semanal #40 — Direito digital em debate", sent: "04 mar 2026", opens: "36.5%", clicks: "6.9%", recipients: 1054, status: "sent" },
 ];
 
 const newsletterStats = [
@@ -898,8 +875,8 @@ export function NewsletterPage() {
     } else {
       const now = new Date();
       const dateStr = `${now.getDate()} ${now.toLocaleString("pt-BR", { month: "short" })} ${now.getFullYear()}`;
-      setItems((p) => [{ id: uid(), subject: form.subject, sent: dateStr, opens: "—", clicks: "—", recipients: 1284 }, ...p]);
-      toast.success("Newsletter criada e agendada");
+      setItems((p) => [{ id: uid(), subject: form.subject, sent: dateStr, opens: "—", clicks: "—", recipients: 1284, status: "draft" }, ...p]);
+      toast.success("Newsletter criada");
     }
     setDialogOpen(false);
   };
@@ -913,10 +890,10 @@ export function NewsletterPage() {
 
   return (
     <div className="space-y-5">
-      <PageHeader title="Newsletter" subtitle="Gerencie leads, envios e métricas">
+      <PageHeader title="Newsletter" subtitle="Gerencie leads, edições e métricas de envio">
         <div className="flex items-center gap-2">
-          <SecondaryBtn onClick={() => toast.success("Exportação iniciada — arquivo será enviado por e-mail.")} icon={Download}>Exportar leads</SecondaryBtn>
-          <PrimaryBtn onClick={openCreate} icon={Send}>Novo envio</PrimaryBtn>
+          <SecondaryBtn onClick={() => toast.success("Exportação iniciada.")} icon={Download}>Exportar leads</SecondaryBtn>
+          <PrimaryBtn onClick={openCreate} icon={Send}>Nova edição</PrimaryBtn>
         </div>
       </PageHeader>
 
@@ -937,12 +914,13 @@ export function NewsletterPage() {
       {/* Table */}
       <div className="rounded-lg bg-card shadow-editorial overflow-hidden">
         <div className="border-b border-border px-5 py-3.5">
-          <h3 className="text-[13px] font-semibold text-foreground font-ui">Envios recentes</h3>
+          <h3 className="text-[13px] font-semibold text-foreground font-ui">Edições</h3>
         </div>
         <table className="w-full">
           <thead>
             <tr className="border-b border-border">
               <th className="px-5 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Assunto</th>
+              <th className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Status</th>
               <th className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground hidden md:table-cell">Data</th>
               <th className="px-4 py-3 text-right text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Abertura</th>
               <th className="px-4 py-3 text-right text-[11px] font-semibold uppercase tracking-wider text-muted-foreground hidden md:table-cell">Cliques</th>
@@ -953,6 +931,11 @@ export function NewsletterPage() {
             {items.map((n) => (
               <tr key={n.id} className="hover:bg-secondary/50 transition-colors">
                 <td className="px-5 py-3"><p className="text-[13px] font-medium text-foreground truncate max-w-md">{n.subject}</p></td>
+                <td className="px-4 py-3">
+                  <span className={cn("text-[10px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wider", n.status === "sent" ? "bg-status-published/10 text-status-published" : "bg-status-draft/10 text-status-draft")}>
+                    {n.status === "sent" ? "Enviada" : "Rascunho"}
+                  </span>
+                </td>
                 <td className="px-4 py-3 hidden md:table-cell"><span className="text-[12px] text-muted-foreground tabular-nums">{n.sent}</span></td>
                 <td className="px-4 py-3 text-right"><span className="text-[13px] font-medium text-foreground tabular-nums">{n.opens}</span></td>
                 <td className="px-4 py-3 text-right hidden md:table-cell"><span className="text-[13px] text-muted-foreground tabular-nums">{n.clicks}</span></td>
@@ -966,8 +949,8 @@ export function NewsletterPage() {
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle className="font-ui text-[15px]">{editing ? "Editar newsletter" : "Novo envio"}</DialogTitle>
-            <DialogDescription className="text-[13px]">{editing ? "Atualize o assunto." : "Configure o próximo envio da newsletter."}</DialogDescription>
+            <DialogTitle className="font-ui text-[15px]">{editing ? "Editar edição" : "Nova edição"}</DialogTitle>
+            <DialogDescription className="text-[13px]">{editing ? "Atualize o assunto." : "Configure a próxima edição da newsletter."}</DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-2">
             <FormField label="Assunto">
@@ -980,13 +963,13 @@ export function NewsletterPage() {
           <DialogFooter className="gap-2">
             <button onClick={() => setDialogOpen(false)} className="h-9 rounded-md border border-input bg-card px-4 text-[13px] font-medium text-foreground hover:bg-secondary transition-colors">Cancelar</button>
             <button onClick={handleSave} className="h-9 rounded-md bg-primary px-4 text-[13px] font-medium text-primary-foreground hover:bg-primary/90 transition-colors flex items-center gap-1.5">
-              <Send className="h-3.5 w-3.5" strokeWidth={2} /> {editing ? "Salvar" : "Agendar envio"}
+              <Send className="h-3.5 w-3.5" strokeWidth={2} /> {editing ? "Salvar" : "Criar edição"}
             </button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
-      <ConfirmDialog open={!!deleteTarget} onClose={() => setDeleteTarget(null)} onConfirm={handleDelete} title="Excluir newsletter" description={`Excluir "${deleteTarget?.subject}"?`} />
+      <ConfirmDialog open={!!deleteTarget} onClose={() => setDeleteTarget(null)} onConfirm={handleDelete} title="Excluir edição" description={`Excluir "${deleteTarget?.subject}"?`} />
     </div>
   );
 }
@@ -995,21 +978,24 @@ export function NewsletterPage() {
    USUÁRIOS
    ═══════════════════════════════════════════════ */
 
-type Usuario = { id: number; name: string; email: string; role: string; status: string; lastLogin: string; initials: string };
+type Usuario = { id: number; name: string; email: string; role: string; status: string; lastLogin: string; initials: string; permissions: string[] };
 
 const initialUsuarios: Usuario[] = [
-  { id: 1, name: "Editor Chefe", email: "editor@veredito.com", role: "Admin", status: "active", lastLogin: "há 5 min", initials: "EC" },
-  { id: 2, name: "Ana Beatriz", email: "ana@veredito.com", role: "Editor", status: "active", lastLogin: "há 2h", initials: "AB" },
-  { id: 3, name: "Carlos Mendes", email: "carlos@veredito.com", role: "Autor", status: "active", lastLogin: "há 1 dia", initials: "CM" },
-  { id: 4, name: "Fernanda Lima", email: "fernanda@veredito.com", role: "Colaborador", status: "inactive", lastLogin: "há 15 dias", initials: "FL" },
-  { id: 5, name: "Ricardo Alves", email: "ricardo@veredito.com", role: "Colaborador", status: "active", lastLogin: "há 3 dias", initials: "RA" },
+  { id: 1, name: "Editor Chefe", email: "editor@veredito.com", role: "Admin", status: "active", lastLogin: "há 5 min", initials: "EC", permissions: ["publicar", "aprovar", "home", "urgente", "analytics", "usuarios"] },
+  { id: 2, name: "Ana Beatriz", email: "ana@veredito.com", role: "Editor-chefe", status: "active", lastLogin: "há 2h", initials: "AB", permissions: ["publicar", "aprovar", "home"] },
+  { id: 3, name: "Carlos Mendes", email: "carlos@veredito.com", role: "Editor", status: "active", lastLogin: "há 1 dia", initials: "CM", permissions: ["publicar"] },
+  { id: 4, name: "Fernanda Lima", email: "fernanda@veredito.com", role: "Colunista", status: "inactive", lastLogin: "há 15 dias", initials: "FL", permissions: [] },
+  { id: 5, name: "Ricardo Alves", email: "ricardo@veredito.com", role: "Autor", status: "active", lastLogin: "há 3 dias", initials: "RA", permissions: [] },
 ];
 
 const userRoleOptions = [
   { value: "Admin", label: "Admin" },
+  { value: "Editor-chefe", label: "Editor-chefe" },
   { value: "Editor", label: "Editor" },
+  { value: "Revisor jurídico", label: "Revisor jurídico" },
   { value: "Autor", label: "Autor" },
-  { value: "Colaborador", label: "Colaborador" },
+  { value: "Colunista", label: "Colunista" },
+  { value: "Operador newsletter", label: "Operador newsletter" },
 ];
 
 const userStatusOptions = [
@@ -1034,7 +1020,7 @@ export function UsuariosPage() {
       setItems((p) => p.map((i) => i.id === editing.id ? { ...i, ...form, initials: getInitials(form.name) } : i));
       toast.success("Usuário atualizado");
     } else {
-      setItems((p) => [...p, { id: uid(), ...form, lastLogin: "nunca", initials: getInitials(form.name) }]);
+      setItems((p) => [...p, { id: uid(), ...form, lastLogin: "nunca", initials: getInitials(form.name), permissions: [] }]);
       toast.success("Convite enviado");
     }
     setDialogOpen(false);
@@ -1049,7 +1035,7 @@ export function UsuariosPage() {
 
   return (
     <div className="space-y-5">
-      <PageHeader title="Usuários" subtitle="Gerencie usuários do painel e permissões">
+      <PageHeader title="Usuários" subtitle="Gerencie acessos e papéis editoriais">
         <PrimaryBtn onClick={openCreate} icon={Plus}>Convidar usuário</PrimaryBtn>
       </PageHeader>
 
@@ -1059,6 +1045,7 @@ export function UsuariosPage() {
             <tr className="border-b border-border">
               <th className="px-5 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Usuário</th>
               <th className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground hidden md:table-cell">Papel</th>
+              <th className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground hidden lg:table-cell">Permissões</th>
               <th className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Status</th>
               <th className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground hidden lg:table-cell">Último acesso</th>
               <th className="w-10"></th>
@@ -1081,6 +1068,15 @@ export function UsuariosPage() {
                     {u.role === "Admin" && <Shield className="h-3 w-3 mr-1" strokeWidth={1.5} />}
                     {u.role}
                   </span>
+                </td>
+                <td className="px-4 py-3 hidden lg:table-cell">
+                  <div className="flex flex-wrap gap-1">
+                    {u.permissions.slice(0, 3).map((p) => (
+                      <span key={p} className="text-[9px] bg-muted text-muted-foreground px-1.5 py-0.5 rounded-full">{p}</span>
+                    ))}
+                    {u.permissions.length > 3 && <span className="text-[9px] text-muted-foreground">+{u.permissions.length - 3}</span>}
+                    {u.permissions.length === 0 && <span className="text-[9px] text-muted-foreground">—</span>}
+                  </div>
                 </td>
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-1.5">
@@ -1140,7 +1136,7 @@ type ConfigSection = { id: string; title: string; description: string; icon: Rea
 
 const configSections: ConfigSection[] = [
   {
-    id: "geral", title: "Geral", description: "Nome do portal, descrição, URL e metadados", icon: Settings,
+    id: "geral", title: "Geral", description: "Nome do portal, descrição e URL base", icon: Settings,
     fields: [
       { key: "portal_name", label: "Nome do portal", type: "text", defaultValue: "Veredito" },
       { key: "portal_url", label: "URL do portal", type: "text", defaultValue: "https://veredito.com.br" },
@@ -1148,7 +1144,14 @@ const configSections: ConfigSection[] = [
     ],
   },
   {
-    id: "seo", title: "SEO", description: "Meta tags, Open Graph, sitemap e robots.txt", icon: Globe,
+    id: "navegacao", title: "Navegação pública", description: "Menus, ordem das editorias e links visíveis", icon: LayoutGrid,
+    fields: [
+      { key: "menu_formatos", label: "Formatos no menu principal", type: "text", defaultValue: "Notícias, Decisões, Artigos, Opinião" },
+      { key: "menu_editorias", label: "Editorias visíveis", type: "text", defaultValue: "Tributário, Empresarial, Imobiliário, Sucessório" },
+    ],
+  },
+  {
+    id: "seo", title: "SEO global", description: "Meta tags padrão, Open Graph e robots", icon: Globe,
     fields: [
       { key: "meta_title", label: "Meta título padrão", type: "text", defaultValue: "Veredito — Jornalismo Jurídico" },
       { key: "meta_desc", label: "Meta descrição padrão", type: "textarea", defaultValue: "Análises, decisões e opiniões sobre o universo jurídico brasileiro." },
@@ -1156,28 +1159,22 @@ const configSections: ConfigSection[] = [
     ],
   },
   {
-    id: "aparencia", title: "Aparência", description: "Tema, cores de destaque e layout da home", icon: Palette,
-    fields: [
-      { key: "accent_color", label: "Cor de acento", type: "text", defaultValue: "#7A5432" },
-      { key: "home_layout", label: "Layout da home", type: "text", defaultValue: "editorial" },
-    ],
-  },
-  {
-    id: "notificacoes", title: "Notificações", description: "Alertas editoriais, prazos e revisões", icon: Bell,
+    id: "notificacoes", title: "Alertas editoriais", description: "Prazos de revisão, alertas de SLA e notificações", icon: Bell,
     fields: [
       { key: "email_alerts", label: "E-mail para alertas", type: "text", defaultValue: "redacao@veredito.com" },
       { key: "review_deadline", label: "Prazo de revisão (horas)", type: "text", defaultValue: "24" },
+      { key: "seo_alert", label: "Alertar conteúdo sem SEO", type: "text", defaultValue: "Sim" },
     ],
   },
   {
-    id: "integracoes", title: "Integrações", description: "APIs externas, webhooks e analytics", icon: Database,
+    id: "integracoes", title: "Analytics e pixels", description: "Google Analytics, pixels de conversão e webhooks", icon: Database,
     fields: [
       { key: "analytics_id", label: "Google Analytics ID", type: "text", defaultValue: "" },
       { key: "webhook_url", label: "Webhook URL", type: "text", defaultValue: "" },
     ],
   },
   {
-    id: "seguranca", title: "Segurança", description: "Políticas de acesso, 2FA e auditoria", icon: Shield,
+    id: "seguranca", title: "Segurança", description: "Políticas de acesso, sessões e auditoria", icon: Shield,
     fields: [
       { key: "force_2fa", label: "Forçar 2FA para admins", type: "text", defaultValue: "Sim" },
       { key: "session_timeout", label: "Timeout da sessão (min)", type: "text", defaultValue: "60" },
@@ -1239,7 +1236,7 @@ export function ConfiguracoesPage() {
 
   return (
     <div className="space-y-5">
-      <PageHeader title="Configurações" subtitle="Configurações gerais do portal, SEO e integrações" />
+      <PageHeader title="Configurações" subtitle="Configurações gerais, SEO, navegação e integrações" />
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {configSections.map((s) => (

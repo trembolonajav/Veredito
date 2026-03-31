@@ -6,18 +6,23 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import LoginPage from "./pages/admin/LoginPage";
 import { AdminLayout } from "./components/admin/AdminLayout";
 import DashboardPage from "./pages/admin/DashboardPage";
+import EditoriasPage from "./pages/admin/EditoriasPage";
+import AutoresPage from "./pages/admin/AutoresPage";
+import FontesPage from "./pages/admin/FontesPage";
+import ConteudosPage from "./pages/admin/ConteudosPage";
 import ConteudoNovoTipoPage from "./pages/admin/ConteudoNovoTipoPage";
 import ConteudoFormPage from "./pages/admin/ConteudoFormPage";
 import ConteudoPreviewPage from "./pages/admin/ConteudoPreviewPage";
-import {
-  ConteudosPage, EditoriasPage, AutoresPage, FontesPage,
-  HomeDestaquesPage, NewsletterPage, UsuariosPage, ConfiguracoesPage,
-} from "./pages/admin/PlaceholderPages";
+import HomeDestaquesPage from "./pages/admin/HomeDestaquesPage";
+import HomePreviewPage from "./pages/admin/HomePreviewPage";
+import NewsletterPage from "./pages/admin/NewsletterPage";
+import UsuariosPage from "./pages/admin/UsuariosPage";
+import ConfiguracoesPage from "./pages/admin/ConfiguracoesPage";
 import { PublicLayout } from "./components/public/PublicLayout";
 import HomePage from "./pages/public/HomePage";
 import {
   NoticiasListPage, DecisoesListPage, ArtigosListPage, OpinioesListPage,
-  ConteudoPublicoPage, EditoriaPublicaPage, BuscaPage,
+  ConteudoPublicoPage, EditoriaPublicaPage, AutorPublicoPage, BuscaPage,
   SobrePage, ContatoPage, NewsletterPublicaPage, PrivacidadePage, TermosPage,
 } from "./pages/public/PublicPages";
 import NotFound from "./pages/NotFound.tsx";
@@ -39,6 +44,7 @@ const App = () => (
             <Route path="/artigos" element={<ArtigosListPage />} />
             <Route path="/opiniao" element={<OpinioesListPage />} />
             <Route path="/editoria/:slug" element={<EditoriaPublicaPage />} />
+            <Route path="/autores/:slug" element={<AutorPublicoPage />} />
             <Route path="/:tipo/:slug" element={<ConteudoPublicoPage />} />
             <Route path="/busca" element={<BuscaPage />} />
             <Route path="/sobre" element={<SobrePage />} />
@@ -61,6 +67,7 @@ const App = () => (
             <Route path="autores" element={<AutoresPage />} />
             <Route path="fontes" element={<FontesPage />} />
             <Route path="home-destaques" element={<HomeDestaquesPage />} />
+            <Route path="home-destaques/preview" element={<HomePreviewPage />} />
             <Route path="newsletter" element={<NewsletterPage />} />
             <Route path="usuarios" element={<UsuariosPage />} />
             <Route path="configuracoes" element={<ConfiguracoesPage />} />

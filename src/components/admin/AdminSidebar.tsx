@@ -1,35 +1,37 @@
 import React from "react";
 import { NavLink as RouterNavLink, useLocation, useNavigate } from "react-router-dom";
 import {
-  LayoutDashboard,
+  ChevronLeft,
+  ChevronRight,
   FileText,
-  Layers,
-  Users,
-  Link2,
+  LayoutDashboard,
   LayoutGrid,
+  Layers,
+  Link2,
+  LogOut,
   Mail,
   Settings,
   UserCog,
-  ChevronLeft,
-  ChevronRight,
-  LogOut,
+  Users,
 } from "lucide-react";
+import { currentUserCan, getCurrentAdminUser } from "@/domain/editorial/selectors";
+import { useEditorialSnapshot } from "@/domain/editorial/store";
 import { cn } from "@/lib/utils";
 import logoPrincipal from "@/assets/logo_principal.png";
 
 const mainNav = [
   { label: "Dashboard", to: "/admin", icon: LayoutDashboard, end: true },
-  { label: "Conteúdos", to: "/admin/conteudos", icon: FileText },
-  { label: "Editorias", to: "/admin/editorias", icon: Layers },
-  { label: "Autores", to: "/admin/autores", icon: Users },
-  { label: "Fontes", to: "/admin/fontes", icon: Link2 },
-  { label: "Home", to: "/admin/home-destaques", icon: LayoutGrid },
-  { label: "Newsletter", to: "/admin/newsletter", icon: Mail },
+  { label: "Conteudos", to: "/admin/conteudos", icon: FileText, permission: "edit_content" },
+  { label: "Editorias", to: "/admin/editorias", icon: Layers, permission: "manage_editorias" },
+  { label: "Autores", to: "/admin/autores", icon: Users, permission: "manage_authors" },
+  { label: "Fontes", to: "/admin/fontes", icon: Link2, permission: "manage_sources" },
+  { label: "Home", to: "/admin/home-destaques", icon: LayoutGrid, permission: "edit_home" },
+  { label: "Newsletter", to: "/admin/newsletter", icon: Mail, permission: "manage_newsletter" },
 ];
 
 const bottomNav = [
-  { label: "Usuários", to: "/admin/usuarios", icon: UserCog },
-  { label: "Configurações", to: "/admin/configuracoes", icon: Settings },
+  { label: "Usuarios", to: "/admin/usuarios", icon: UserCog, permission: "manage_users" },
+  { label: "Configuracoes", to: "/admin/configuracoes", icon: Settings, permission: "manage_settings" },
 ];
 
 interface AdminSidebarProps {
@@ -40,6 +42,10 @@ interface AdminSidebarProps {
 export function AdminSidebar({ collapsed, onToggle }: AdminSidebarProps) {
   const location = useLocation();
   const navigate = useNavigate();
+  const snapshot = useEditorialSnapshot();
+  const currentUser = getCurrentAdminUser(snapshot);
+  const visibleMainNav = mainNav.filter((item) => !item.permission || currentUserCan(item.permission, snapshot));
+  const visibleBottomNav = bottomNav.filter((item) => !item.permission || currentUserCan(item.permission, snapshot));
 
   return (
     <aside
@@ -48,21 +54,17 @@ export function AdminSidebar({ collapsed, onToggle }: AdminSidebarProps) {
         collapsed ? "w-16" : "w-60"
       )}
     >
-      {/* Brand */}
-      <div className="flex h-20 items-center gap-3 border-b border-sidebar-border px-4">
+      <div className="flex h-14 items-center gap-3 border-b border-sidebar-border px-4">
         {!collapsed ? (
-          <img src={logoPrincipal} alt="Veredito" className="h-16 w-auto brightness-0 invert opacity-90" />
+          <img src={logoPrincipal} alt="Veredito" className="h-12 w-auto brightness-0 invert opacity-90" />
         ) : (
           <span className="font-display text-xl font-normal text-sidebar-foreground mx-auto opacity-80">V</span>
         )}
       </div>
 
-      {/* Main nav */}
       <nav className="flex-1 overflow-y-auto px-2 py-3 space-y-0.5">
-        {mainNav.map((item) => {
-          const isActive = item.end
-            ? location.pathname === item.to
-            : location.pathname.startsWith(item.to);
+        {visibleMainNav.map((item) => {
+          const isActive = item.end ? location.pathname === item.to : location.pathname.startsWith(item.to);
           return (
             <RouterNavLink
               key={item.to}
@@ -82,9 +84,8 @@ export function AdminSidebar({ collapsed, onToggle }: AdminSidebarProps) {
         })}
       </nav>
 
-      {/* Bottom nav */}
       <div className="border-t border-sidebar-border px-2 py-3 space-y-0.5">
-        {bottomNav.map((item) => {
+        {visibleBottomNav.map((item) => {
           const isActive = location.pathname.startsWith(item.to);
           return (
             <RouterNavLink
@@ -105,16 +106,15 @@ export function AdminSidebar({ collapsed, onToggle }: AdminSidebarProps) {
         })}
       </div>
 
-      {/* User & collapse */}
       <div className="border-t border-sidebar-border p-3">
         {!collapsed && (
           <div className="flex items-center gap-3 mb-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-sidebar-accent text-[11px] font-semibold text-sidebar-foreground">
-              EC
+              {(currentUser?.name || "V").slice(0, 2).toUpperCase()}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-[13px] font-medium text-sidebar-foreground truncate">Editor Chefe</p>
-              <p className="text-[11px] text-sidebar-foreground/50 truncate">editor@veredito.com</p>
+              <p className="text-[13px] font-medium text-sidebar-foreground truncate">{currentUser?.name || "Operador"}</p>
+              <p className="text-[11px] text-sidebar-foreground/50 truncate">{currentUser?.email || "redacao@veredito.com"}</p>
             </div>
           </div>
         )}
@@ -133,11 +133,7 @@ export function AdminSidebar({ collapsed, onToggle }: AdminSidebarProps) {
             onClick={onToggle}
             className="flex h-7 w-7 items-center justify-center rounded-md text-sidebar-foreground/50 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground transition-colors duration-150"
           >
-            {collapsed ? (
-              <ChevronRight className="h-4 w-4" strokeWidth={1.5} />
-            ) : (
-              <ChevronLeft className="h-4 w-4" strokeWidth={1.5} />
-            )}
+            {collapsed ? <ChevronRight className="h-4 w-4" strokeWidth={1.5} /> : <ChevronLeft className="h-4 w-4" strokeWidth={1.5} />}
           </button>
         </div>
       </div>

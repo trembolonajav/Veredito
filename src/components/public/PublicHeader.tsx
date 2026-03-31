@@ -1,131 +1,122 @@
-import React, { useState } from "react";
-import { Link, NavLink, useLocation } from "react-router-dom";
-import { Search, Menu, X } from "lucide-react";
-import logoPrincipal from "@/assets/logo_principal.png";
-import { cn } from "@/lib/utils";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Search } from "lucide-react";
+import {
+  getActiveNavContext,
+  getPrimaryNavigationItems,
+  getSiteConfig,
+  getUrgentCards,
+} from "@/domain/editorial/selectors";
+import { useEditorialSnapshot } from "@/domain/editorial/store";
+import { ContextSubnavBar } from "./header/ContextSubnavBar";
+import { MainMasthead } from "./header/MainMasthead";
+import { PrimaryNavBar } from "./header/PrimaryNavBar";
+import { TopUrgentBar } from "./header/TopUrgentBar";
 
-const navItems = [
-  { label: "Notícias", to: "/noticias" },
-  { label: "Decisões", to: "/decisoes" },
-  { label: "Artigos", to: "/artigos" },
-  { label: "Opinião", to: "/opiniao" },
-  { label: "Sobre", to: "/sobre" },
-];
+function getContentHref(type: string, slug: string) {
+  const base = type === "news" ? "noticias" : type === "decision" ? "decisoes" : type === "article" ? "artigos" : "opiniao";
+  return `/${base}/${slug}`;
+}
 
 export function PublicHeader() {
+  const snapshot = useEditorialSnapshot();
+  const siteConfig = getSiteConfig(snapshot);
+  const urgent = getUrgentCards("2026-03-24T16:00:00Z", snapshot)[0];
+  const primaryItems = getPrimaryNavigationItems(snapshot);
+  const location = useLocation();
+  const activeNav = getActiveNavContext(location.pathname, snapshot);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const location = useLocation();
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handler = () => setScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", handler, { passive: true });
+    return () => window.removeEventListener("scroll", handler);
+  }, []);
+
+  useEffect(() => {
+    setMobileOpen(false);
+    setSearchOpen(false);
+  }, [location.pathname]);
 
   return (
-    <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
-      {/* Breaking bar (optional — shown when there's breaking news) */}
-      {location.pathname === "/" && (
-        <div className="bg-primary text-primary-foreground py-1.5 px-4 text-center">
-          <p className="text-[12px] font-medium font-ui">
-            <span className="bg-bronze text-bronze-foreground px-1.5 py-0.5 rounded text-[10px] font-bold uppercase mr-2">Urgente</span>
-            STF suspende efeitos de lei estadual sobre ICMS — decisão tem impacto em 12 estados
-          </p>
-        </div>
-      )}
+    <header className="sticky top-0 z-50 bg-background">
+      <TopUrgentBar
+        urgent={urgent ? { title: urgent.title, urgentLabel: urgent.urgentLabel, href: getContentHref(urgent.type, urgent.slug) } : null}
+      />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link to="/" className="shrink-0">
-            <img src={logoPrincipal} alt="Veredito" className="h-10 w-auto" />
-          </Link>
+      <MainMasthead
+        scrolled={scrolled}
+        mobileOpen={mobileOpen}
+        onToggleMobile={() => setMobileOpen((current) => !current)}
+        onToggleSearch={() => setSearchOpen((current) => !current)}
+        newsletterLabel={siteConfig.newsletterLabel}
+      />
 
-          {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-1">
-            {navItems.map((item) => (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                className={({ isActive }) =>
-                  cn(
-                    "px-3 py-2 rounded-md text-[14px] font-medium transition-colors font-ui",
-                    isActive
-                      ? "text-primary bg-primary/5"
-                      : "text-muted-foreground hover:text-foreground hover:bg-secondary"
-                  )
-                }
-              >
-                {item.label}
-              </NavLink>
-            ))}
-          </nav>
+      <PrimaryNavBar items={primaryItems} activeKey={activeNav.activePrimaryKey} />
+      <ContextSubnavBar label={activeNav.activeSubnavLabel} items={activeNav.contextualLinks} />
 
-          {/* Actions */}
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setSearchOpen(!searchOpen)}
-              className="flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
-            >
-              <Search className="h-4 w-4" strokeWidth={1.5} />
-            </button>
-
-            <Link
-              to="/newsletter"
-              className="hidden sm:flex h-9 items-center rounded-md bg-primary px-4 text-[13px] font-medium text-primary-foreground hover:bg-primary/90 transition-colors font-ui"
-            >
-              Newsletter
-            </Link>
-
-            {/* Mobile menu toggle */}
-            <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className="flex md:hidden h-9 w-9 items-center justify-center rounded-md text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
-            >
-              {mobileOpen ? <X className="h-5 w-5" strokeWidth={1.5} /> : <Menu className="h-5 w-5" strokeWidth={1.5} />}
-            </button>
-          </div>
-        </div>
-
-        {/* Search bar */}
-        {searchOpen && (
-          <div className="pb-4">
-            <div className="relative">
+      {searchOpen && (
+        <div className="border-b border-border bg-background editorial-fade-in">
+          <div className="mx-auto max-w-[1200px] px-4 py-4 sm:px-6">
+            <div className="relative mx-auto max-w-xl">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" strokeWidth={1.5} />
               <input
                 type="text"
-                placeholder="Buscar notícias, decisões, artigos..."
+                placeholder={`Buscar em ${siteConfig.siteName.toLowerCase()}...`}
                 autoFocus
-                className="h-11 w-full rounded-lg border border-input bg-card pl-10 pr-4 text-[14px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-colors"
+                className="h-10 w-full border-b border-primary bg-transparent pl-10 pr-4 font-ui text-[14px] text-foreground placeholder:text-muted-foreground focus:outline-none"
+                onKeyDown={(event) => {
+                  if (event.key === "Escape") setSearchOpen(false);
+                }}
               />
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
-      {/* Mobile menu */}
       {mobileOpen && (
-        <div className="md:hidden border-t border-border bg-background">
-          <nav className="px-4 py-3 space-y-1">
-            {navItems.map((item) => (
-              <NavLink
-                key={item.to}
+        <div className="border-b border-border bg-background editorial-fade-in md:hidden">
+          <nav className="space-y-0.5 px-4 py-3">
+            <p className="px-3 py-1 font-ui text-[9px] font-bold uppercase tracking-[0.15em] text-bronze">Navegação</p>
+            {primaryItems.map((item) => (
+              <Link
+                key={item.key}
                 to={item.to}
-                onClick={() => setMobileOpen(false)}
-                className={({ isActive }) =>
-                  cn(
-                    "block px-3 py-2.5 rounded-md text-[15px] font-medium transition-colors font-ui",
-                    isActive
-                      ? "text-primary bg-primary/5"
-                      : "text-foreground hover:bg-secondary"
-                  )
-                }
+                className="flex items-center border-b border-border/50 px-3 py-2.5 font-ui text-[13px] text-muted-foreground transition-colors hover:text-primary last:border-0"
               >
                 {item.label}
-              </NavLink>
+              </Link>
             ))}
-            <Link
-              to="/newsletter"
-              onClick={() => setMobileOpen(false)}
-              className="block px-3 py-2.5 rounded-md text-[15px] font-medium text-bronze transition-colors font-ui hover:bg-secondary"
-            >
-              Newsletter
-            </Link>
+
+            {activeNav.contextualLinks.length > 0 && (
+              <>
+                <div className="pb-1 pt-3">
+                  <p className="px-3 py-1 font-ui text-[9px] font-bold uppercase tracking-[0.15em] text-bronze">
+                    {activeNav.activeSubnavLabel}
+                  </p>
+                </div>
+                {activeNav.contextualLinks.map((item) => (
+                  <Link
+                    key={item.to}
+                    to={item.to}
+                    className="flex items-center px-3 py-2 font-ui text-[12px] text-muted-foreground transition-colors hover:text-primary"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </>
+            )}
+
+            <div className="flex items-center gap-4 px-3 pt-3">
+              <Link to="/newsletter" className="font-ui text-[11px] font-semibold uppercase tracking-wider text-bronze">
+                {siteConfig.newsletterLabel}
+              </Link>
+              <Link to="/login" className="font-ui text-[11px] text-muted-foreground">
+                Entrar
+              </Link>
+            </div>
           </nav>
         </div>
       )}

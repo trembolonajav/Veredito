@@ -18,19 +18,18 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen">
       {/* Left — banner editorial */}
-      <div
-        className="hidden lg:flex lg:w-1/2 flex-col justify-between p-12 relative overflow-hidden"
-        style={{
-          backgroundImage: `url(${bannerLogin})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        {/* Overlay for readability */}
-        <div className="absolute inset-0 bg-primary/30" />
+      <div className="relative hidden overflow-hidden lg:flex lg:w-1/2 flex-col justify-between p-12">
+        <img
+          src={bannerLogin}
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover object-center opacity-95"
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-primary/20 to-primary/40" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.08),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(184,134,11,0.12),transparent_30%)]" />
 
         <div className="relative z-10">
-          <img src={logoPrincipal} alt="Veredito" className="h-20 w-auto brightness-0 invert opacity-90" />
+          <img src={logoPrincipal} alt="Veredito" className="h-24 w-auto brightness-0 invert opacity-90" />
         </div>
 
         <div className="relative z-10">
@@ -54,7 +53,7 @@ export default function LoginPage() {
         <div className="w-full max-w-sm">
           {/* Mobile brand */}
           <div className="mb-10 lg:hidden flex flex-col items-center">
-            <img src={logoPrincipal} alt="Veredito" className="h-16 w-auto mb-2" />
+            <img src={logoPrincipal} alt="Veredito" className="h-20 w-auto mb-2" />
           </div>
 
           <div className="mb-8">
